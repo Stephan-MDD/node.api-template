@@ -3,25 +3,27 @@ import { Router, Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
 // modules
-import { HttpCodes } from '../Utilities';
+import HttpCodes from './HttpCodes';
+import UserRoles from './UserRoles';
 
 /// content
 const route: string = '/auth';
 const router: Router = Router();
 
-router.post('/signin', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+	const { username, password } = req.body;
+
+	// get username & password -> can throw 404
+	// match passwords  -> can throw 401
+
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 	if (!accessTokenSecret) return res.status(HttpCodes.InternalServerError);
 
-	// ATT:: encrypt password etc.
-	var token = jwt.sign({ username: req.body.username }, accessTokenSecret);
+	const token = jwt.sign({ username: req.body.username }, accessTokenSecret);
 	res.json({ token });
 });
 
-router.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
-	res.send('signup');
-});
-
+// authentication with jwt
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
 	const authHeader = req.headers.authorization;
 	if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
@@ -32,7 +34,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 	try {
 		const token: string = authHeader.split(' ')[1];
 		const decoded: any = jwt.verify(token, accessTokenSecret);
-		console.log('decoded::', decoded);
+		console.table(decoded); // remove
 
 		if (decoded.username) req.body.username = decoded?.username;
 		else return res.sendStatus(HttpCodes.Unauthorized);
@@ -43,4 +45,14 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 	}
 }
 
-export default { router, route, auth: false };
+// role restriction by privileges
+export function restrict(userRoles: UserRoles) {
+	return async (req: Request, res: Response, next: NextFunction) => {
+		authenticate(req, res, () => {});
+		// user service -> check user privileges | req.body.username
+
+		next();
+	};
+}
+
+export default { router, route };

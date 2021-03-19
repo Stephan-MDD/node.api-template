@@ -1,7 +1,10 @@
+// reference: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
 enum HttpCodes {
 	// success codes
 	Accepted = 200,
 	Created = 201,
+	NoContent = 204,
 
 	// redirection codes
 
