@@ -2,9 +2,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-// modules
-import HttpCodes from './HttpCodes';
-import UserRoles from './UserRoles';
+/// modules
+import { HttpCodes, UserRoles } from '../Enums';
 
 /// content
 const route: string = '/auth';

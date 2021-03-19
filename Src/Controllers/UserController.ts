@@ -2,8 +2,7 @@
 import { Router, Request, Response } from 'express';
 
 /// modules
-import HttpCodes from './HttpCodes';
-import UserRoles from './UserRoles';
+import { HttpCodes, UserRoles } from '../Enums';
 import { authenticate, restrict } from './AuthController';
 
 /// content
