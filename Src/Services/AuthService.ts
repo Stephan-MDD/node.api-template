@@ -5,8 +5,8 @@ import * as jwt from 'jsonwebtoken';
 import ServiceResponse from './ServiceResponse';
 import { HttpCodes, UserRoles } from '../Enums';
 
-export async function authenticate(token: string, userRoles?: UserRoles): Promise<ServiceResponse<string>> {
-	const response = new ServiceResponse<string>();
+export async function authenticate(token: string, restrictTo?: UserRoles): Promise<ServiceResponse<{ userId: string; userRole: UserRoles }>> {
+	const response = new ServiceResponse<{ userId: string; userRole: UserRoles }>();
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
 	if (!accessTokenSecret) {
@@ -15,7 +15,7 @@ export async function authenticate(token: string, userRoles?: UserRoles): Promis
 		return response;
 	}
 
-	if (userRoles != null) {
+	if (restrictTo != null) {
 		// att:: validate restriction here...
 		/** handle user roles
 		 * - banned -> return forbidden
@@ -25,9 +25,11 @@ export async function authenticate(token: string, userRoles?: UserRoles): Promis
 		 */
 	}
 
+	// response.data.userRole = ?
+
 	try {
 		const decoded: any = jwt.verify(token, accessTokenSecret);
-		response.data = decoded;
+		response.data.userId = decoded;
 	} catch (err) {
 		response.success = false;
 		response.status = HttpCodes.Unauthorized;

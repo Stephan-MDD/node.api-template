@@ -20,6 +20,8 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
 	if (!accessTokenSecret) return res.status(HttpCodes.InternalServerError);
 
 	const token = jwt.sign({ username: req.body.username }, accessTokenSecret);
+
+	// next();
 	res.json({ token });
 });
 
@@ -40,7 +42,10 @@ export function authenticate(userRoles?: UserRoles) {
 
 		if (response.success) {
 			// applies userId to request object
-			req.body.userId = response.data;
+			req.body._userId = response.data;
+
+			// att:: set user role for later access
+			// req.body._userRole = response.userRole;
 			return next();
 		} else {
 			return res.status(status).json(response);
