@@ -25,7 +25,7 @@ router.get('/:id', authenticate(), async (req: Request, res: Response) => {
 });
 
 // create user
-router.post('/', authenticate(), async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
 	const user: User = req.body; // att:: apply dto
 	const { status, ...response } = await UserService.add(user);
 	res.status(status).json(response);

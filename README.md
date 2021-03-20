@@ -43,6 +43,8 @@ app.get('', authenticate(UserRoles.Default), async (req: Request, res: Response)
 
 ### TypeORM
 
+https://typeorm.io/#/
+
 ### PostgreSQL
 
 ## Deployment

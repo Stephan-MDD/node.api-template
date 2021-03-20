@@ -13,8 +13,8 @@ const router: Router = Router();
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
 	const { username, password } = req.body;
 
-	// get username & password -> can throw 404
-	// match passwords  -> can throw 401
+	// att:: get username & password -> can throw 404
+	// att:: match passwords  -> can throw 401
 
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 	if (!accessTokenSecret) return res.status(HttpCodes.InternalServerError);
@@ -39,6 +39,7 @@ export function authenticate(userRoles?: UserRoles) {
 		const { status, ...response } = await AuthService.authenticate(token, userRoles);
 
 		if (response.success) {
+			// applies userId to request object
 			req.body.userId = response.data;
 			return next();
 		} else {
