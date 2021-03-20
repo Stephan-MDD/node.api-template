@@ -2,6 +2,8 @@
 
 ## Authentication
 
+`Bearer Header`
+
 `authenticate` - validates JWT
 
 ### Usage

@@ -29,7 +29,13 @@ export function authenticate(userRoles?: UserRoles) {
 		const authHeader = req.headers.authorization;
 		if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
 
-		const { token } = /Bearer (?<token>.*)/g.exec(authHeader).groups;
+		const token = /Bearer (?<token>.*)/g.exec(authHeader)?.groups?.token;
+
+		if (!token) {
+			// att:: ServiceResponse ?
+			return res.status(HttpCodes.Unauthorized).json({});
+		}
+
 		const { status, ...response } = await AuthService.authenticate(token, userRoles);
 
 		if (response.success) {
