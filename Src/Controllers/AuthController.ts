@@ -4,6 +4,7 @@ import * as jwt from 'jsonwebtoken';
 
 /// modules
 import { HttpCodes, UserRoles } from '../Enums';
+import { AuthService } from '../Services';
 
 /// content
 const route: string = '/auth';
@@ -27,30 +28,36 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 	const authHeader = req.headers.authorization;
 	if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
 
-	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
-	if (!accessTokenSecret) return res.status(HttpCodes.InternalServerError);
+	const { token } = /Bearer (?<token>.*)/g.exec(authHeader).groups;
+	const { status, ...response } = await AuthService.authenticate(token);
 
-	try {
-		const token: string = authHeader.split(' ')[1];
-		const decoded: any = jwt.verify(token, accessTokenSecret);
-		console.table(decoded); // remove
-
-		if (decoded.username) req.body.username = decoded?.username;
-		else return res.sendStatus(HttpCodes.Unauthorized);
-
+	if (response.success) {
+		req.body.userId = response.data;
 		return next();
-	} catch (err) {
-		res.sendStatus(HttpCodes.Unauthorized);
+	} else {
+		return res.status(status).json(response);
 	}
 }
 
 // role restriction by privileges
-export function restrict(userRoles: UserRoles) {
+export function restrictTo(userRoles: UserRoles) {
 	return async (req: Request, res: Response, next: NextFunction) => {
-		authenticate(req, res, () => {});
-		// user service -> check user privileges | req.body.username
+		const authHeader = req.headers.authorization;
+		if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
 
-		next();
+		const { token } = /Bearer (?<token>.*)/g.exec(authHeader).groups;
+		const { status, ...response } = await AuthService.authenticate(token);
+
+		if (response.success) {
+			req.body.userId = response.data;
+
+			// att:: validate restriction here...
+			// const { status, ...response } = await AuthService.restrictTo(userRoles);
+
+			return next();
+		} else {
+			return res.status(status).json(response);
+		}
 	};
 }
 

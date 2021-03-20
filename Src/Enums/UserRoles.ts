@@ -1,5 +1,3 @@
-// reference:
-
 enum UserRoles {
 	Banned = -1,
 	Default = 0,

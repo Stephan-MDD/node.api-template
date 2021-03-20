@@ -2,8 +2,9 @@
 
 enum HttpCodes {
 	// success codes
-	Accepted = 200,
+	Ok = 200,
 	Created = 201,
+	Accepted = 202,
 	NoContent = 204,
 
 	// redirection codes
