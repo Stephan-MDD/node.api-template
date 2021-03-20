@@ -1,5 +1,43 @@
 # Node API Template
 
+## Authentication
+
+`authenticate` - validates JWT
+`restrictTo` - uses `authenticate` and checks users privileges
+
+### Usage
+
+**Without authentication middleware**
+
+```typescript
+// typescript
+app.get('', async (req: Request, res: Response) => {
+	// handle request here...
+});
+```
+
+**With authenticate middleware**
+
+```typescript
+// typescript
+import { authenticate } from './AuthController';
+app.get('', authenticate, async (req: Request, res: Response) => {
+	// handle request here...
+});
+```
+
+**With restrictTo middleware**
+
+```typescript
+// typescript
+import { restrictTo } from './AuthController';
+import { UserRoles } from '../Enums';
+
+app.get('', restrictTo(UserRoles.Default), async (req: Request, res: Response) => {
+	// handle request here...
+});
+```
+
 ## Database
 
 ### TypeORM
