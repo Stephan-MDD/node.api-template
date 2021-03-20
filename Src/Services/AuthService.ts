@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import ServiceResponse from './ServiceResponse';
 import { HttpCodes, UserRoles } from '../Enums';
 
-export async function authenticate(token: string): Promise<ServiceResponse<string>> {
+export async function authenticate(token: string, userRoles?: UserRoles): Promise<ServiceResponse<string>> {
 	const response = new ServiceResponse<string>();
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
@@ -13,6 +13,16 @@ export async function authenticate(token: string): Promise<ServiceResponse<strin
 		response.success = false;
 		response.status = HttpCodes.InternalServerError;
 		return response;
+	}
+
+	if (userRoles != null) {
+		// att:: validate restriction here...
+		/** handle user roles
+		 * - banned -> return forbidden
+		 * - default -> return next()
+		 * - editor -> return next()
+		 * - admin -> return next()
+		 */
 	}
 
 	try {
@@ -24,8 +34,4 @@ export async function authenticate(token: string): Promise<ServiceResponse<strin
 	}
 
 	return response;
-}
-
-export function restrictTo(userRoles: UserRoles): Promise<ServiceResponse<string>> {
-	throw new Error('not implemented yet');
 }

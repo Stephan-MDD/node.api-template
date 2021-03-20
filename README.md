@@ -3,7 +3,6 @@
 ## Authentication
 
 `authenticate` - validates JWT
-`restrictTo` - uses `authenticate` and checks users privileges
 
 ### Usage
 
@@ -21,19 +20,19 @@ app.get('', async (req: Request, res: Response) => {
 ```typescript
 // typescript
 import { authenticate } from './AuthController';
-app.get('', authenticate, async (req: Request, res: Response) => {
+app.get('', authenticate(), async (req: Request, res: Response) => {
 	// handle request here...
 });
 ```
 
-**With restrictTo middleware**
+**With authenticate to role middleware**
 
 ```typescript
 // typescript
-import { restrictTo } from './AuthController';
+import { authenticate } from './AuthController';
 import { UserRoles } from '../Enums';
 
-app.get('', restrictTo(UserRoles.Default), async (req: Request, res: Response) => {
+app.get('', authenticate(UserRoles.Default), async (req: Request, res: Response) => {
 	// handle request here...
 });
 ```

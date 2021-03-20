@@ -23,37 +23,17 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
 	res.json({ token });
 });
 
-// authentication with jwt
-export async function authenticate(req: Request, res: Response, next: NextFunction) {
-	const authHeader = req.headers.authorization;
-	if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
-
-	const { token } = /Bearer (?<token>.*)/g.exec(authHeader).groups;
-	const { status, ...response } = await AuthService.authenticate(token);
-
-	if (response.success) {
-		req.body.userId = response.data;
-		return next();
-	} else {
-		return res.status(status).json(response);
-	}
-}
-
 // role restriction by privileges
-export function restrictTo(userRoles: UserRoles) {
+export function authenticate(userRoles?: UserRoles) {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		const authHeader = req.headers.authorization;
 		if (!authHeader) return res.sendStatus(HttpCodes.Unauthorized);
 
 		const { token } = /Bearer (?<token>.*)/g.exec(authHeader).groups;
-		const { status, ...response } = await AuthService.authenticate(token);
+		const { status, ...response } = await AuthService.authenticate(token, userRoles);
 
 		if (response.success) {
 			req.body.userId = response.data;
-
-			// att:: validate restriction here...
-			// const { status, ...response } = await AuthService.restrictTo(userRoles);
-
 			return next();
 		} else {
 			return res.status(status).json(response);
