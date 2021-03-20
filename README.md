@@ -32,3 +32,21 @@ Services/       # db requests handler's
     Index.ts        # service bundler
 Test/           # for service testing
 ```
+
+## Environment Variables
+
+**Server Configurations**
+
+-   `SERVER_PORT`
+
+**Json Web Token Configurations**
+
+-   `JWT_SECRET`
+
+**PostgreSQL Configurations**
+
+-   `DB_HOST`
+-   `DB_PORT`
+-   `DB_NAME`
+-   `DB_USERNAME`
+-   `DB_PASSWORD`
