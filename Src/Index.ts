@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 
 /// modules
 import * as Controllers from './Controllers';
+import { Monitor } from './Middlewares';
 
 /// content
 dotenv.config();
@@ -13,6 +14,7 @@ const port: number = Number(process.env.SERVER_PORT);
 
 // middleware
 app.use(express.json());
+app.use(Monitor.request());
 
 Object.values(Controllers).forEach((controller) => {
 	app.use(controller.route, controller.router);

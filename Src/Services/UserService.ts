@@ -1,6 +1,10 @@
 import ServiceResponse from './ServiceResponse';
 import { User } from '../Models';
 
+/** Setup typeORM
+ * apply to services
+ */
+
 export async function getAll(): Promise<ServiceResponse<User[]>> {
 	const response = new ServiceResponse<User[]>();
 	const user: User = { name: 'marc', password: 'pass123', username: 'marc@mail.io' };
