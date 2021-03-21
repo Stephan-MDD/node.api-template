@@ -5,12 +5,13 @@ import * as jwt from 'jsonwebtoken';
 import ServiceResponse from './ServiceResponse';
 import { HttpCodes, UserRoles } from '../Enums';
 
-export async function authenticate(token: string, restrictTo?: UserRoles): Promise<ServiceResponse<{ userId: string; userRole: UserRoles }>> {
-	const response = new ServiceResponse<{ userId: string; userRole: UserRoles }>();
+export async function authenticate(token: string, restrictTo?: UserRoles): Promise<ServiceResponse> {
+	const response = new ServiceResponse();
+	response.data = { userId: null, userRole: null };
+
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
 	if (!accessTokenSecret) {
-		response.success = false;
 		response.status = HttpCodes.InternalServerError;
 		return response;
 	}
@@ -31,7 +32,7 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 		const decoded: any = jwt.verify(token, accessTokenSecret);
 		response.data.userId = decoded;
 	} catch (err) {
-		response.success = false;
+		console.log('token::', err);
 		response.status = HttpCodes.Unauthorized;
 	}
 

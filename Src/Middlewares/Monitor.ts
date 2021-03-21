@@ -1,6 +1,6 @@
 import * as os from 'os';
 import { Request, Response, NextFunction } from 'express';
-import { UserRoles } from '../Enums';
+import { UserRoles, HttpCodes } from '../Enums';
 
 /** Monitor Middleware
  * Save meta data to database
@@ -18,7 +18,7 @@ import { UserRoles } from '../Enums';
 
 export function initiate() {
 	return async (req: Request, res: Response, next: NextFunction) => {
-		req.body._entryTime = Date.now();
+		res.locals.entryTime = Date.now();
 		next();
 	};
 }
@@ -27,11 +27,21 @@ export function conclude() {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		// save meta data to database
 
-		if (req.body._userRole > UserRoles.Default) return next();
+		if (res.locals.userRole > UserRoles.Default) return next();
 
-		const elapsedTime: number = Date.now() - req.body._entryTime;
-		// os.cpus()
-		console.table({ url: req.url, method: req.method, totalmem: os.totalmem(), freemem: os.freemem(), ...process.cpuUsage(), elapsedTime });
-		next();
+		const processTime: number = Date.now() - res.locals.entryTime;
+		const url: string = req.url;
+		const method: string = req.method;
+		const totalMemory: number = os.totalmem();
+		const freeMemory: number = os.freemem();
+		const CPUs = os.cpus();
+		const CPU_Usage = process.cpuUsage();
+
+		console.table({ processTime, url, method, totalMemory, freeMemory /*, CPUs, CPU_Usage*/ });
+
+		const { status, ...response } = res.locals.serviceResponse;
+
+		if (response) res.status(status).json(response);
+		else res.send(status || HttpCodes.InternalServerError);
 	};
 }

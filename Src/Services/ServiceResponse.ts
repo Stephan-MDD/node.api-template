@@ -1,8 +1,7 @@
 import { HttpCodes } from '../Enums';
 
-export default class ServiceResponse<T> {
-	data?: T;
+export default class ServiceResponse {
+	data?: any;
 	message?: string;
-	success: boolean = true;
 	status: HttpCodes = HttpCodes.Ok;
 }

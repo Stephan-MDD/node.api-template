@@ -1,5 +1,5 @@
 /// libraries
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 
 /// modules
 import { UserRoles } from '../Enums';
@@ -10,7 +10,7 @@ import { MonitorService } from '../Services';
 const route: string = '/monitor';
 const router: Router = Router();
 
-router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res: Response) => {
+router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
 	const { entry, exit } = req.query;
 
 	// data format: yyyy-mm-ddThh-mm-ss (Minimized ISO Format)
@@ -34,8 +34,10 @@ router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res:
 	console.log('entryDate::', entryDate);
 	console.log('exitDate::', exitDate);
 
-	const { status, ...response } = await MonitorService.getRequests(entryDate, exitDate);
-	res.status(status).json(response);
+	const serviceResponse = await MonitorService.getRequests(entryDate, exitDate);
+	res.locals.serviceResponse = serviceResponse;
+
+	next();
 });
 
 export default { router, route };

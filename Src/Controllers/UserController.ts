@@ -1,5 +1,5 @@
 /// libraries
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 
 /// modules
 import { UserRoles } from '../Enums';
@@ -12,38 +12,38 @@ const route: string = '/user';
 const router: Router = Router();
 
 // get all user
-router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Response) => {
-	const { status, ...response } = await UserService.getAll();
-	res.status(status).json(response);
+router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
+	res.locals.serviceResponse = await UserService.getAll();
+	next();
 });
 
 // get user
-router.get('/:id', authenticate(), async (req: Request, res: Response) => {
+router.get('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	const { status, ...response } = await UserService.get(id);
-	res.status(status).json(response);
+	res.locals.serviceResponse = await UserService.get(id);
+	next();
 });
 
 // create user
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 	const user: User = req.body; // att:: apply dto
-	const { status, ...response } = await UserService.add(user);
-	res.status(status).json(response);
+	res.locals.serviceResponse = await UserService.add(user);
+	next();
 });
 
 // update user
-router.put('/:id', authenticate(), async (req: Request, res: Response) => {
+router.put('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
 	const user: User = req.body; // att:: apply dto
-	const { status, ...response } = await UserService.update(id, user);
-	res.status(status).json(response);
+	res.locals.serviceResponse = await UserService.update(id, user);
+	next();
 });
 
 // update user
-router.delete('/:id', authenticate(), async (req: Request, res: Response) => {
+router.delete('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	const { status, ...response } = await UserService.remove(id);
-	res.status(status).json(response);
+	res.locals.serviceResponse = await UserService.remove(id);
+	next();
 });
 
 export default { router, route };
