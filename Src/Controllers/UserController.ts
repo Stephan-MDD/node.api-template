@@ -39,7 +39,7 @@ router.put('/:id', authenticate(), async (req: Request, res: Response, next: Nex
 	next();
 });
 
-// update user
+// delete user
 router.delete('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
 	res.locals.serviceResponse = await UserService.remove(id);
