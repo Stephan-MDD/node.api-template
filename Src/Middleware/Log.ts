@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction, Errback } from 'express';
 import { ServiceResponse } from '../Services';
-import { BaseError, ServerError } from '../Errors';
+import { BaseError, ServerError, ClientError } from '../Errors';
 
 export function clientErrors() {
 	return async (err: BaseError, req: Request, res: Response, next: NextFunction) => {
-		// att:: fix error routing
+		// calling next error middleware
 		if (err instanceof ServerError) return next(new ServerError(err.status, err.message));
 
-		console.log('Logging clientErrors');
 		// log errors (database/ winston?)
 
 		const serviceResponse = new ServiceResponse();

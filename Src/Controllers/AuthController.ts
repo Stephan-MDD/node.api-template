@@ -21,7 +21,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
 	if (!accessTokenSecret) {
-		return next(new ClientError(HttpCodes.InternalServerError));
+		return next(new ServerError(HttpCodes.InternalServerError));
 	}
 
 	const token: string = jwt.sign({ username: req.body.username }, accessTokenSecret);
