@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Errback } from 'express';
 import { ServiceResponse } from '../Services';
-import { BaseError, ServerError, ClientError } from '../Errors';
+import { BaseError, ServerError } from '../Errors';
 
 export function clientErrors() {
 	return async (err: BaseError, req: Request, res: Response, next: NextFunction) => {
