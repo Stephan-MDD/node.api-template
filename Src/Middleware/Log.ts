@@ -7,6 +7,7 @@ export function clientErrors() {
 		// calling next error middleware
 		if (err instanceof ServerError) return next(new ServerError(err.status, err.message));
 
+		console.log('Logging clientErrors');
 		// log errors (database/ winston?)
 
 		const serviceResponse = new ServiceResponse();
