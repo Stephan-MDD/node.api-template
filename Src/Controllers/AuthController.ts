@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 /// modules
 import { HttpCodes, UserRoles } from '../Enums';
 import { AuthService, ServiceResponse } from '../Services';
-import { AuthenticateError } from '../Errors';
+import { ClientError, ServerError } from '../Errors';
 
 /// content
 const route: string = '/auth';
@@ -21,7 +21,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
 	if (!accessTokenSecret) {
-		return next(new AuthenticateError(HttpCodes.InternalServerError));
+		return next(new ClientError(HttpCodes.InternalServerError));
 	}
 
 	const token: string = jwt.sign({ username: req.body.username }, accessTokenSecret);
@@ -36,19 +36,19 @@ export function authenticate(userRoles?: UserRoles) {
 		const authHeader = req.headers.authorization;
 
 		if (!authHeader) {
-			return next(new AuthenticateError(HttpCodes.Unauthorized));
+			return next(new ClientError(HttpCodes.Unauthorized));
 		}
 
 		const token = /Bearer (?<token>.*)/g.exec(authHeader)?.groups?.token;
 
 		if (!token) {
-			return next(new AuthenticateError(HttpCodes.Unauthorized));
+			return next(new ClientError(HttpCodes.Unauthorized));
 		}
 
 		const { status, ...response } = await AuthService.authenticate(token, userRoles);
 
 		if (status < 200 || status >= 300) {
-			return next(new AuthenticateError(HttpCodes.Unauthorized));
+			return next(new ClientError(HttpCodes.Unauthorized));
 		}
 
 		// applies userId to request object

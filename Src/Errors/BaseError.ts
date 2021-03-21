@@ -1,9 +1,10 @@
-import { Request } from 'express';
+import { HttpCodes } from '../Enums';
 
 export default class BaseError extends Error {
-	constructor(...errorArgs: [string, number, any, any]) {
-		super(errorArgs[0]);
+	status: HttpCodes;
 
-		// handle log -> request
+	constructor(status: HttpCodes, message?: string) {
+		super(message);
+		this.status = status;
 	}
 }
