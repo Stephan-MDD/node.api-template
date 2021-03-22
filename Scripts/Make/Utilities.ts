@@ -8,11 +8,13 @@ export const colors = {
 	cyan: '\x1b[36m',
 };
 
-export function loaderAnimation() {
+export function animatedLoader() {
 	const loaderElements: string[] = ['▉', '▊', '▋', '▌', '▍', '▎', '▏', '▎', '▍', '▌', '▋', '▊', '▉'];
+
 	return setInterval(() => {
 		const content: string = `\rcreating files ${colors.blue}${loaderElements.join(' ')}${colors.reset}`;
 		process.stdout.write(content);
+
 		const element: string = loaderElements.pop();
 		loaderElements.unshift(element);
 	}, 100);

@@ -20,14 +20,14 @@ router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Respon
 // get user
 router.get('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	res.locals.serviceResponse = await UserService.get(id);
+	res.locals.serviceResponse = await UserService.getSingle(id);
 	next();
 });
 
 // create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 	const user: User = req.body; // att:: apply dto
-	res.locals.serviceResponse = await UserService.add(user);
+	res.locals.serviceResponse = await UserService.addSingle(user);
 	next();
 });
 
@@ -35,14 +35,14 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.put('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
 	const user: User = req.body; // att:: apply dto
-	res.locals.serviceResponse = await UserService.update(id, user);
+	res.locals.serviceResponse = await UserService.updateSingle(id, user);
 	next();
 });
 
 // delete user
 router.delete('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	res.locals.serviceResponse = await UserService.remove(id);
+	res.locals.serviceResponse = await UserService.deleteSingle(id);
 	next();
 });
 

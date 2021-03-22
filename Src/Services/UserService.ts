@@ -12,24 +12,24 @@ export async function getAll(): Promise<ServiceResponse> {
 	return response;
 }
 
-export async function get(id: number): Promise<ServiceResponse> {
+export async function getSingle(id: number): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	const user: User = { name: 'marc', password: 'pass123', username: 'marc@mail.io' };
 	response.data = user;
 	return response;
 }
 
-export async function add(user: User): Promise<ServiceResponse> {
+export async function addSingle(user: User): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	return response;
 }
 
-export async function update(id: number, user: User): Promise<ServiceResponse> {
+export async function updateSingle(id: number, user: User): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	return response;
 }
 
-export async function remove(id: number): Promise<ServiceResponse> {
+export async function deleteSingle(id: number): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	return response;
 }

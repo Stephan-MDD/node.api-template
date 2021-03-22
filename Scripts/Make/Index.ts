@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import yargs from 'yargs';
 
-import { colors, loaderAnimation } from './Utilities';
+import { colors, animatedLoader } from './Utilities';
 
 const feedWidth: number = process.stdout.columns;
 const feedHeight: number = process.stdout.rows;
@@ -12,7 +12,10 @@ const argument: string = process.argv[2]; // handle with yargs
  * exclude -> -e --exclude [test, controller, service, model]
  * include -> -i --include [test, controller, service, model]
  * target -> -t --target serviceName (test only) -d --default (optional)
+ * override -> -o --override
  * help -> -h --help
+ *
+ * if file exist log warning with override command
  */
 
 if (!argument) {
@@ -32,7 +35,7 @@ const targets = [
 ];
 
 console.clear();
-const loader = loaderAnimation();
+const loader = animatedLoader();
 console.log(`${colors.blue}Initiating resource creation for`, `${colors.cyan}${entity}`, colors.reset);
 
 console.log();
