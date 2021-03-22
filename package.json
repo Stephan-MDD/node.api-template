@@ -4,10 +4,11 @@
 	"main": "src/Index.ts",
 	"license": "MIT",
 	"scripts": {
-		"start": "yarn ts-node src/Index.ts",
+		"start": "yarn ts-node Src/Index.ts",
 		"dev": "yarn nodemon",
 		"test": "yarn jest",
-		"coverage": "yarn jest --coverage"
+		"coverage": "yarn jest --coverage",
+		"new": "yarn ts-node Scripts/NewEntity"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.13.10",
