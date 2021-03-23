@@ -2,7 +2,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 /// modules
-import { __target__Service } from '../__target__s';
+import { __target__Service } from '../Services';
 import { __target__ } from '../Models';
 
 /// content

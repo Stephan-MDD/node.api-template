@@ -1,0 +1,158 @@
+import { __target__Service } from '../Services';
+import { HttpCodes } from '../Enums';
+import { __target__ } from '../Models';
+
+describe('Function getAll', () => {
+	test('Should return __target__[]', async () => {
+		// arrange
+		const expectedData: __target__[] = null;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
+		const expectedMessage: string = '';
+
+		// act
+		const actual = await __target__Service.getAll();
+
+		// assert
+		expect(expectedData).toBe(actual.data);
+		expect(expectedStatus).toBe(actual.status);
+		expect(expectedMessage).toBe(actual.message);
+	});
+});
+
+describe('Function getSingle', () => {
+	test('Should return __target__', async () => {
+		// arrange
+		const __target_lower__Id = 1;
+
+		const expectedData: __target__ = null;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
+		const expectedMessage: string = '';
+
+		// act
+		const actual = await __target__Service.getSingle(__target_lower__Id);
+
+		// assert
+		expect(expectedData).toBe(actual.data);
+		expect(expectedStatus).toBe(actual.status);
+		expect(expectedMessage).toBe(actual.message);
+	});
+
+	describe('Error Handling', () => {
+		test('should throw Error', () => {
+			// arrange
+			const __target_lower__Id = -1;
+
+			// act
+			const action = async () => {
+				await __target__Service.getSingle(__target_lower__Id);
+			};
+
+			// assert
+			expect(action).rejects.toThrow(Error);
+		});
+	});
+});
+
+describe('Function addSingle', () => {
+	test('Should add __target__', async () => {
+		// arrange
+		const __target_lower__: __target__ = new __target__();
+
+		const expectedData: __target__ = null;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
+		const expectedMessage: string = '';
+
+		// act
+		const actual = await __target__Service.addSingle(__target_lower__);
+
+		// assert
+		expect(expectedData).toBe(actual.data);
+		expect(expectedStatus).toBe(actual.status);
+		expect(expectedMessage).toBe(actual.message);
+	});
+
+	describe('Error Handling', () => {
+		test('should throw Error', () => {
+			// arrange
+			const __target_lower__: __target__ = new __target__();
+
+			// act
+			const action = async () => {
+				await __target__Service.addSingle(__target_lower__);
+			};
+
+			// assert
+			expect(action).rejects.toThrow(Error);
+		});
+	});
+});
+
+describe('Function updateSingle', () => {
+	test('Should update __target__', async () => {
+		// arrange
+		const __target_lower__Id: number = 1;
+		const __target_lower__: __target__ = new __target__();
+
+		const expectedData: __target__ = null;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
+		const expectedMessage: string = '';
+
+		// act
+		const actual = await __target__Service.updateSingle(__target_lower__Id, __target_lower__);
+
+		// assert
+		expect(expectedData).toBe(actual.data);
+		expect(expectedStatus).toBe(actual.status);
+		expect(expectedMessage).toBe(actual.message);
+	});
+
+	describe('Error Handling', () => {
+		test('should throw Error', () => {
+			// arrange
+			const __target_lower__Id: number = -1;
+			const __target_lower__: __target__ = new __target__();
+
+			// act
+			const action = async () => {
+				await __target__Service.updateSingle(__target_lower__Id, __target_lower__);
+			};
+
+			// assert
+			expect(action).rejects.toThrow(Error);
+		});
+	});
+});
+
+describe('Function deleteSingle', () => {
+	test('Should delete __target__', async () => {
+		// arrange
+		const __target_lower__Id: number = 1;
+
+		const expectedData: __target__ = null;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
+		const expectedMessage: string = '';
+
+		// act
+		const actual = await __target__Service.deleteSingle(__target_lower__Id);
+
+		// assert
+		expect(expectedData).toBe(actual.data);
+		expect(expectedStatus).toBe(actual.status);
+		expect(expectedMessage).toBe(actual.message);
+	});
+
+	describe('Error Handling', () => {
+		test('should throw Error', () => {
+			// arrange
+			const __target_lower__Id: number = -1;
+
+			// act
+			const action = async () => {
+				await __target__Service.deleteSingle(__target_lower__Id);
+			};
+
+			// assert
+			expect(action).rejects.toThrow(Error);
+		});
+	});
+});

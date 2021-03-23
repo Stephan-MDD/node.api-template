@@ -8,7 +8,9 @@
 		"dev": "yarn nodemon",
 		"test": "yarn jest",
 		"coverage": "yarn jest --coverage",
-		"make": "yarn ts-node Scripts/Make"
+		"make": "yarn ts-node Scripts/Make",
+		"build": "echo 'Not Implemented'",
+		"deploy": "echo 'Not Implemented'"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.13.10",
