@@ -1,3 +1,35 @@
+import * as yargs from 'yargs';
+
+export function getArgs() {
+	return yargs
+		.option('exclude', {
+			alias: 'e',
+			default: [],
+			array: true,
+			demand: false,
+			description: 'exclude files',
+		})
+		.option('include', {
+			alias: 'i',
+			array: true,
+			demand: false,
+			description: 'include files',
+		})
+		.option('target', {
+			alias: 't',
+			string: true,
+			demand: false,
+			description: 'create test for service',
+		})
+		.option('override', {
+			alias: 'o',
+			default: false,
+			boolean: true,
+			demand: false,
+			description: 'override existing files',
+		}).argv;
+}
+
 export const colors = {
 	reset: '\x1b[0m', // reset
 	red: '\x1b[31m', // error

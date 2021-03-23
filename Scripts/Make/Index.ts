@@ -1,26 +1,20 @@
 import { promises as fs } from 'fs';
-import yargs from 'yargs';
 
-import { colors, animatedLoader } from './Utilities';
+import { getArgs, colors, animatedLoader } from './Utilities';
 
+const args = getArgs();
+const argument: string = String(args._[0]);
 const feedWidth: number = process.stdout.columns;
 const feedHeight: number = process.stdout.rows;
-const argument: string = process.argv[2]; // handle with yargs
 
 /**
- * yarn make [test, controller, service, model] || -c --create name
- * exclude -> -e --exclude [test, controller, service, model]
- * include -> -i --include [test, controller, service, model]
- * target -> -t --target serviceName (test only) -d --default (optional)
- * override -> -o --override
- * help -> -h --help
- *
  * if file exist log warning with override command
  */
 
-if (!argument) {
+if (argument === 'undefined') {
 	console.log(`${colors.red}No argument declared`, colors.reset);
-	console.log(`documentation: ${colors.blue}yarn make ${colors.cyan}--help`, colors.reset);
+	console.log(`Documentation: ${colors.blue}yarn make ${colors.cyan}--help`, colors.reset);
+	console.log();
 	process.exit();
 }
 
