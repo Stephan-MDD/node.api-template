@@ -29,21 +29,11 @@ export function getArgs() {
 		}).argv;
 }
 
-export const colors = {
-	reset: '\x1b[0m', // reset
-	red: '\x1b[31m', // error
-	green: '\x1b[32m', // success
-	yellow: '\x1b[33m', // warning
-	blue: '\x1b[34m',
-	magenta: '\x1b[35m',
-	cyan: '\x1b[36m',
-};
-
 export function animatedLoader() {
 	const loaderElements: string[] = ['▉', '▊', '▋', '▌', '▍', '▎', '▏', '▎', '▍', '▌', '▋', '▊', '▉'];
 
 	return setInterval(() => {
-		const content: string = `\rcreating files ${colors.blue}${loaderElements.join(' ')}${colors.reset}`;
+		const content: string = `\rcreating files \x1b[34m${loaderElements.join(' ')}\x1b[0m`;
 		process.stdout.write(content);
 
 		const element: string = loaderElements.pop();

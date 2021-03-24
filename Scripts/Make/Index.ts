@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 
-import { getArgs, handleCasing, colors, animatedLoader } from './Utilities';
+import { getArgs, handleCasing, animatedLoader } from './Utilities';
+import { cyan, red, green, yellow, blue, magenta } from './Literals';
 
 const args = getArgs();
 
@@ -9,8 +10,8 @@ const feedWidth: number = process.stdout.columns;
 const feedHeight: number = process.stdout.rows;
 
 if (args._[0] === undefined) {
-	console.log(`${colors.red}No argument declared`, colors.reset);
-	console.log(`Documentation: ${colors.blue}yarn make ${colors.cyan}--help`, colors.reset);
+	console.log(red`No argument declared`);
+	console.log(`Documentation:`, blue`yarn make`, cyan`--help`);
 	console.log();
 	process.exit();
 }
@@ -34,9 +35,9 @@ if (args.include) {
 	});
 }
 
-// console.clear();
+console.clear();
 const loader = animatedLoader();
-console.log(`${colors.blue}Initiating resource creation for`, `${colors.cyan}${target.pascalCase}`, colors.reset);
+console.log(blue`Initiating resource creation for`, cyan`${target.pascalCase}`);
 console.log();
 
 (async () => {
@@ -54,8 +55,8 @@ console.log();
 				// override file
 			} else {
 				// log warning
-				console.log(`${colors.yellow}${filePath} exists`, colors.reset);
-				console.log(`Use:${colors.blue} [-o, --override]${colors.reset} to override`);
+				console.log(yellow`${filePath} exists`);
+				console.log('Use:', cyan`[-o, --override]`, 'to override');
 				console.log();
 				return {};
 			}
@@ -93,21 +94,21 @@ console.log();
 	clearInterval(loader);
 
 	if (created.length != 0) {
-		console.log(`${colors.green}Successfully Created Resources:`, colors.reset);
-		created.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
+		console.log(green`Successfully Created Resources:`);
+		created.forEach((item: string) => console.log(cyan`• ${item}`));
 		console.log();
 
-		console.log(`${colors.green}Successfully Modified Index Files:`, colors.reset);
-		modified.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
+		console.log(green`Successfully Modified Index Files:`);
+		modified.forEach((item: string) => console.log(cyan`• ${item}`));
 		console.log();
 
 		if (true /** if service is created */) {
-			console.log(`${colors.yellow}Warning:`, colors.reset);
-			console.log(`${target.pascalCase}Service.ts will throw:`, `${colors.magenta}Error('Not Implemented')`, colors.reset);
+			console.log(yellow`Warning:`);
+			console.log(`${target.pascalCase}Service.ts will throw:`, magenta`Error('Not Implemented')`);
 			console.log();
 		}
 	} else {
-		console.log(`${colors.red}No ${colors.magenta}${target.pascalCase} ${colors.red}files was created`, colors.reset);
+		console.log(red`No`, magenta`${target.pascalCase}`, red`files was created`);
 		console.log();
 	}
 })();
