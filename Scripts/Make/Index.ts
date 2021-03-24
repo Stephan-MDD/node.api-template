@@ -1,64 +1,78 @@
 import { promises as fs } from 'fs';
 
-import { getArgs, colors, animatedLoader } from './Utilities';
+import { getArgs, handleCasing, colors, animatedLoader } from './Utilities';
 
 const args = getArgs();
-const argument: string = String(args._[0]);
+
+// for later loading implementation
 const feedWidth: number = process.stdout.columns;
 const feedHeight: number = process.stdout.rows;
 
-if (argument === 'undefined') {
+if (args._[0] === undefined) {
 	console.log(`${colors.red}No argument declared`, colors.reset);
 	console.log(`Documentation: ${colors.blue}yarn make ${colors.cyan}--help`, colors.reset);
 	console.log();
 	process.exit();
 }
 
-const entity = argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+const target = handleCasing(String(args._[0]));
 
-const targets = [
-	{ directory: 'Controllers', templateSuffix: 'Controller', suffix: 'Controller' },
-	{ directory: 'Models', templateSuffix: 'Model', suffix: '' },
-	{ directory: 'Services', templateSuffix: 'Service', suffix: 'Service', option: 'useDefault' },
-	{ directory: 'Test', templateSuffix: 'Test', suffix: 'Service.test', option: 'ignoreIndex' },
+let targets = [
+	{ alias: 'c', directory: 'Controllers', templateSuffix: 'Controller', suffix: 'Controller' },
+	{ alias: 'm', directory: 'Models', templateSuffix: 'Model', suffix: '' },
+	{ alias: 's', directory: 'Services', templateSuffix: 'Service', suffix: 'Service', option: 'useDefault' },
+	{ alias: 't', directory: 'Test', templateSuffix: 'Test', suffix: 'Service.test', option: 'ignoreIndex' },
 ];
 
-console.clear();
+if (args.include) {
+	targets = targets.filter(({ alias }) => {
+		return args.include.includes(alias);
+	});
+} else if (args.exclude) {
+	targets = targets.filter(({ alias }) => {
+		return !args.exclude.includes(alias);
+	});
+}
+
+// console.clear();
 const loader = animatedLoader();
-console.log(`${colors.blue}Initiating resource creation for`, `${colors.cyan}${entity}`, colors.reset);
+console.log(`${colors.blue}Initiating resource creation for`, `${colors.cyan}${target.pascalCase}`, colors.reset);
 console.log();
 
 (async () => {
 	const fileTasks = targets.map(async ({ directory, suffix, templateSuffix, option }) => {
-		const filePath: string = `Src/${directory}/${entity}${suffix}.ts`;
+		const filePath: string = `Src/${directory}/${target.pascalCase}${suffix}.ts`;
 		const indexPath: string = `Src/${directory}/Index.ts`;
 
+		// tries to load file before creating
+		// if it exits a 'override' must be applied
+		// if not the file is written
 		try {
-			const _bytes: Buffer = await fs.readFile(filePath);
-			// return // handle exists?
+			await fs.readFile(filePath);
+
+			if (args.override) {
+				// override file
+			} else {
+				// log warning
+				console.log(`${colors.yellow}${filePath} exists`, colors.reset);
+				console.log(`Use:${colors.blue} [-o, --override]${colors.reset} to override`);
+				console.log();
+				return {};
+			}
 		} catch (error) {
-			console.log("File doesn't exist");
-			// if file exist log warning with override command
+			// write file here
 		}
 
-		try {
-			const bytes = await fs.readFile(`${__dirname}/Templates/Template${templateSuffix}`);
-			let data = bytes.toString();
-			data = data.replace(/__target__/g, entity);
-			data = data.replace(/__target_lower__/g, entity.toLowerCase());
-
-			// await fs.writeFile(filePath, data);
-		} catch (error) {
-			console.log(error);
-			// call clean function;
-			throw error;
-		}
+		await createFile(target, templateSuffix);
 
 		if (option === 'ignoreIndex') return { created: filePath };
 
+		// await updateIndex()
+
 		try {
-			const method = option === 'useDefault' ? `{ default as ${entity}${suffix} }` : `* as ${entity}${suffix}`;
-			// await fs.appendFile(indexPath, `export ${method} from './${entity}${suffix}';`);
+			const method = option === 'useDefault' ? `{ default as ${target.pascalCase}${suffix} }` : `* as ${target.pascalCase}${suffix}`;
+
+			// await fs.appendFile(indexPath, `export ${method} from './${target.pascalCase}${suffix}';`);
 			return { created: filePath, modified: indexPath };
 		} catch (error) {
 			console.log(error);
@@ -77,18 +91,41 @@ console.log();
 	);
 
 	clearInterval(loader);
-	console.log(`${colors.green}Successfully Created Resources:`, colors.reset);
-	created.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
-	console.log();
 
-	console.log(`${colors.green}Successfully Modified Index Files:`, colors.reset);
-	modified.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
-	console.log();
+	if (created.length != 0) {
+		console.log(`${colors.green}Successfully Created Resources:`, colors.reset);
+		created.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
+		console.log();
 
-	console.log(`${colors.yellow}Warning:`, colors.reset);
-	console.log(`${colors.reset}${entity}Service.ts will throw:`, `${colors.magenta}Error('Not Implemented')`, colors.reset);
-	console.log();
+		console.log(`${colors.green}Successfully Modified Index Files:`, colors.reset);
+		modified.forEach((item: string) => console.log(`${colors.cyan}• ${item}`, colors.reset));
+		console.log();
+
+		if (true /** if service is created */) {
+			console.log(`${colors.yellow}Warning:`, colors.reset);
+			console.log(`${target.pascalCase}Service.ts will throw:`, `${colors.magenta}Error('Not Implemented')`, colors.reset);
+			console.log();
+		}
+	} else {
+		console.log(`${colors.red}No ${colors.magenta}${target.pascalCase} ${colors.red}files was created`, colors.reset);
+		console.log();
+	}
 })();
 
 // remove generated files
 function clean() {}
+
+async function createFile(target: any, templateSuffix: string) {
+	try {
+		const bytes = await fs.readFile(`${__dirname}/Templates/Template${templateSuffix}`);
+		let data = bytes.toString();
+		data = data.replace(/__target__/g, target.pascalCase);
+		data = data.replace(/__target_lower__/g, target.camelCase);
+
+		// await fs.writeFile(filePath, data);
+	} catch (error) {
+		console.log(error);
+		// call clean function;
+		throw error;
+	}
+}

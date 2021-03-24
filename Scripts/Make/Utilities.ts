@@ -4,7 +4,6 @@ export function getArgs() {
 	return yargs
 		.option('exclude', {
 			alias: 'e',
-			default: [],
 			array: true,
 			demand: false,
 			description: 'exclude files',
@@ -50,4 +49,27 @@ export function animatedLoader() {
 		const element: string = loaderElements.pop();
 		loaderElements.unshift(element);
 	}, 100);
+}
+
+export function handleCasing(arg: string) {
+	const items: string[] = arg.split('-');
+
+	const pascalCase = items.reduce((acc: string, cur: string) => {
+		const res = cur.charAt(0).toUpperCase() + cur.slice(1).toLowerCase();
+		return acc + res;
+	}, '');
+
+	const camelCase = items.reduce((acc: string, cur: string, index: number) => {
+		let res: string;
+
+		if (index === 0) {
+			res = cur.toLowerCase();
+		} else {
+			res = cur.charAt(0).toUpperCase() + cur.slice(1).toLowerCase();
+		}
+
+		return acc + res;
+	}, '');
+
+	return { pascalCase, camelCase };
 }
