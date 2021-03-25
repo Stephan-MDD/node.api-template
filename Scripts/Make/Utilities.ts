@@ -36,8 +36,8 @@ export function animatedLoader() {
 		const content: string = `\rcreating files \x1b[34m${loaderElements.join(' ')}\x1b[0m`;
 		process.stdout.write(content);
 
-		const element: string = loaderElements.pop();
-		loaderElements.unshift(element);
+		const element: string | undefined = loaderElements.pop();
+		if (element) loaderElements.unshift(element);
 	}, 100);
 }
 
@@ -62,8 +62,5 @@ export function handleCasing(arg: string) {
 	}, '');
 
 	const snakeCase: string = (() => items.join('_'))().toUpperCase();
-
-	console.log('snakeCase', snakeCase);
-
 	return { pascalCase, camelCase, snakeCase };
 }

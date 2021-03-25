@@ -20,18 +20,20 @@ const target = handleCasing(String(args._[0]));
 
 let targets = [
 	{ alias: 'c', directory: 'Controllers', templateSuffix: 'Controller', suffix: 'Controller' },
-	{ alias: 'm', directory: 'Models', templateSuffix: 'Model', suffix: '' },
+	{ alias: 'm', directory: 'Entities', templateSuffix: 'Entity', suffix: '' },
 	{ alias: 's', directory: 'Services', templateSuffix: 'Service', suffix: 'Service', option: 'useDefault' },
 	{ alias: 't', directory: 'Test', templateSuffix: 'Test', suffix: 'Service.test', option: 'ignoreIndex' },
 ];
 
 if (args.include) {
 	targets = targets.filter(({ alias }) => {
-		return args.include.includes(alias);
+		const includeArgs: any = args.include;
+		return includeArgs.includes(alias);
 	});
 } else if (args.exclude) {
 	targets = targets.filter(({ alias }) => {
-		return !args.exclude.includes(alias);
+		const excludeArgs: any = args.include;
+		return !excludeArgs.includes(alias);
 	});
 }
 

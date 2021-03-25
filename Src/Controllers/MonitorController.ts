@@ -14,8 +14,8 @@ router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res:
 	const { entry, exit } = req.query;
 
 	// data format: yyyy-mm-ddThh-mm-ss (Minimized ISO Format)
-	let entryDate: Date = new Date(String(entry));
-	let exitDate: Date = new Date(String(exit));
+	let entryDate: Date | null = new Date(String(entry));
+	let exitDate: Date | null = new Date(String(exit));
 
 	/** Query Options
 	 * entry: Data -> filter from
@@ -30,9 +30,6 @@ router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res:
 	// validates date parsing
 	if (entryDate.toString() === 'Invalid Date') entryDate = null;
 	if (exitDate.toString() === 'Invalid Date') exitDate = null;
-
-	console.log('entryDate::', entryDate);
-	console.log('exitDate::', exitDate);
 
 	const serviceResponse = await MonitorService.getRequests(entryDate, exitDate);
 	res.locals.serviceResponse = serviceResponse;
