@@ -1,5 +1,5 @@
-import { BaseError } from './';
-import { HttpCodes } from '../Enums';
+import { BaseError } from '..';
+import { HttpCodes } from '../../Enums';
 
 export default class ClientError extends BaseError {
 	type: string = 'client';

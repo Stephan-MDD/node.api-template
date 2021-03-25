@@ -3,12 +3,14 @@ import bcrypt from 'bcrypt';
 import ServiceResponse from './ServiceResponse';
 import { User } from '../Entities';
 import { HttpCodes } from '../Enums';
+import { UserDTO } from '../DTOs/User';
+import { NotFoundError } from '../Errors/ClientErrors';
 
 export async function getAll(): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	const allUsers: User[] = await User.find();
 
-	response.data = allUsers;
+	response.data = allUsers.map((user) => new UserDTO(user));
 	return response;
 }
 
@@ -18,12 +20,10 @@ export async function getSingle(id: number): Promise<ServiceResponse> {
 
 	// user not found
 	if (user === undefined) {
-		response.message = `Could not find user with id: ${id}`;
-		response.status = HttpCodes.NotFound;
-		return response;
+		throw new NotFoundError(`Could not find user with id: ${id}`);
 	}
 
-	response.data = user;
+	response.data = new UserDTO(user);
 
 	return response;
 }
@@ -40,7 +40,7 @@ export async function addSingle(userNew: User): Promise<ServiceResponse> {
 	user.password = passwordHash;
 	await user.save();
 
-	response.data = user; // DTO?
+	response.data = new UserDTO(user);
 	response.status = HttpCodes.Created;
 
 	return response;
@@ -52,9 +52,7 @@ export async function updateSingle(id: number, userUpdate: User): Promise<Servic
 
 	// user not found
 	if (user === undefined) {
-		response.message = `Could not find user with id: ${id}`;
-		response.status = HttpCodes.NotFound;
-		return response;
+		throw new NotFoundError(`Could not find user with id: ${id}`);
 	}
 
 	// add bcrypt for password
@@ -63,7 +61,7 @@ export async function updateSingle(id: number, userUpdate: User): Promise<Servic
 	if (userUpdate.password) user.password = userUpdate.password;
 
 	await user.save();
-	response.data = user;
+	response.data = new UserDTO(user);
 
 	return response;
 }
@@ -74,9 +72,7 @@ export async function deleteSingle(id: number): Promise<ServiceResponse> {
 
 	// user not found
 	if (user === undefined) {
-		response.message = `Could not find user with id: ${id}`;
-		response.status = HttpCodes.NotFound;
-		return response;
+		throw new NotFoundError(`Could not find user with id: ${id}`);
 	}
 
 	await user.remove();
