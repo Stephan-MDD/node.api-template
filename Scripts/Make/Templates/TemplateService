@@ -1,5 +1,5 @@
 import ServiceResponse from './ServiceResponse';
-import { __target__ } from '../Models';
+import { __PascalCase__ } from '../Models';
 
 export async function getAll(): Promise<ServiceResponse> {
 	throw new Error('Not Implemented');
@@ -15,14 +15,14 @@ export async function getSingle(id: number): Promise<ServiceResponse> {
 	return response;
 }
 
-export async function addSingle(__target_lower__: __target__): Promise<ServiceResponse> {
+export async function addSingle(__camelCase__: __PascalCase__): Promise<ServiceResponse> {
 	throw new Error('Not Implemented');
     const response = new ServiceResponse();
 	response.data = null;
 	return response;
 }
 
-export async function updateSingle(id: number, __target_lower__: __target__): Promise<ServiceResponse> {
+export async function updateSingle(id: number, __camelCase__: __PascalCase__): Promise<ServiceResponse> {
 	throw new Error('Not Implemented');
     const response = new ServiceResponse();
 	response.data = null;

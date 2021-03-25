@@ -44,12 +44,12 @@ export function animatedLoader() {
 export function handleCasing(arg: string) {
 	const items: string[] = arg.split('-');
 
-	const pascalCase = items.reduce((acc: string, cur: string) => {
+	const pascalCase: string = items.reduce((acc: string, cur: string) => {
 		const res = cur.charAt(0).toUpperCase() + cur.slice(1).toLowerCase();
 		return acc + res;
 	}, '');
 
-	const camelCase = items.reduce((acc: string, cur: string, index: number) => {
+	const camelCase: string = items.reduce((acc: string, cur: string, index: number) => {
 		let res: string;
 
 		if (index === 0) {
@@ -61,5 +61,9 @@ export function handleCasing(arg: string) {
 		return acc + res;
 	}, '');
 
-	return { pascalCase, camelCase };
+	const snakeCase: string = (() => items.join('_'))().toUpperCase();
+
+	console.log('snakeCase', snakeCase);
+
+	return { pascalCase, camelCase, snakeCase };
 }

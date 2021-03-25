@@ -1,2 +1,2 @@
-export default class __target__ {
+export default class __PascalCase__ {
 }

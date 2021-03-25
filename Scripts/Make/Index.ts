@@ -120,8 +120,9 @@ async function createFile(target: any, templateSuffix: string) {
 	try {
 		const bytes = await fs.readFile(`${__dirname}/Templates/Template${templateSuffix}`);
 		let data = bytes.toString();
-		data = data.replace(/__target__/g, target.pascalCase);
-		data = data.replace(/__target_lower__/g, target.camelCase);
+		data = data.replace(/__PascalCase__/g, target.pascalCase);
+		data = data.replace(/__camelCase__/g, target.camelCase);
+		data = data.replace(/__SNAKE_CASE__/g, target.snakeCase);
 
 		// await fs.writeFile(filePath, data);
 	} catch (error) {

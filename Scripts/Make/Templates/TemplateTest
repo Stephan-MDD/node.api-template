@@ -1,16 +1,16 @@
-import { __target__Service } from '../Services';
+import { __PascalCase__Service } from '../Services';
 import { HttpCodes } from '../Enums';
-import { __target__ } from '../Models';
+import { __PascalCase__ } from '../Models';
 
 describe('Function getAll', () => {
-	test('Should return __target__[]', async () => {
+	test('Should return __PascalCase__[]', async () => {
 		// arrange
-		const expectedData: __target__[] = null;
+		const expectedData: __PascalCase__[] = null;
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await __target__Service.getAll();
+		const actual = await __PascalCase__Service.getAll();
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -20,16 +20,16 @@ describe('Function getAll', () => {
 });
 
 describe('Function getSingle', () => {
-	test('Should return __target__', async () => {
+	test('Should return __PascalCase__', async () => {
 		// arrange
-		const __target_lower__Id = 1;
+		const __camelCase__Id = 1;
 
-		const expectedData: __target__ = null;
+		const expectedData: __PascalCase__ = null;
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await __target__Service.getSingle(__target_lower__Id);
+		const actual = await __PascalCase__Service.getSingle(__camelCase__Id);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -40,11 +40,11 @@ describe('Function getSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const __target_lower__Id = -1;
+			const __camelCase__Id = -1;
 
 			// act
 			const action = async () => {
-				await __target__Service.getSingle(__target_lower__Id);
+				await __PascalCase__Service.getSingle(__camelCase__Id);
 			};
 
 			// assert
@@ -54,16 +54,16 @@ describe('Function getSingle', () => {
 });
 
 describe('Function addSingle', () => {
-	test('Should add __target__', async () => {
+	test('Should add __PascalCase__', async () => {
 		// arrange
-		const __target_lower__: __target__ = new __target__();
+		const __camelCase__: __PascalCase__ = new __PascalCase__();
 
-		const expectedData: __target__ = null;
+		const expectedData: __PascalCase__ = null;
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await __target__Service.addSingle(__target_lower__);
+		const actual = await __PascalCase__Service.addSingle(__camelCase__);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -74,11 +74,11 @@ describe('Function addSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const __target_lower__: __target__ = new __target__();
+			const __camelCase__: __PascalCase__ = new __PascalCase__();
 
 			// act
 			const action = async () => {
-				await __target__Service.addSingle(__target_lower__);
+				await __PascalCase__Service.addSingle(__camelCase__);
 			};
 
 			// assert
@@ -88,17 +88,17 @@ describe('Function addSingle', () => {
 });
 
 describe('Function updateSingle', () => {
-	test('Should update __target__', async () => {
+	test('Should update __PascalCase__', async () => {
 		// arrange
-		const __target_lower__Id: number = 1;
-		const __target_lower__: __target__ = new __target__();
+		const __camelCase__Id: number = 1;
+		const __camelCase__: __PascalCase__ = new __PascalCase__();
 
-		const expectedData: __target__ = null;
+		const expectedData: __PascalCase__ = null;
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await __target__Service.updateSingle(__target_lower__Id, __target_lower__);
+		const actual = await __PascalCase__Service.updateSingle(__camelCase__Id, __camelCase__);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -109,12 +109,12 @@ describe('Function updateSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const __target_lower__Id: number = -1;
-			const __target_lower__: __target__ = new __target__();
+			const __camelCase__Id: number = -1;
+			const __camelCase__: __PascalCase__ = new __PascalCase__();
 
 			// act
 			const action = async () => {
-				await __target__Service.updateSingle(__target_lower__Id, __target_lower__);
+				await __PascalCase__Service.updateSingle(__camelCase__Id, __camelCase__);
 			};
 
 			// assert
@@ -124,16 +124,16 @@ describe('Function updateSingle', () => {
 });
 
 describe('Function deleteSingle', () => {
-	test('Should delete __target__', async () => {
+	test('Should delete __PascalCase__', async () => {
 		// arrange
-		const __target_lower__Id: number = 1;
+		const __camelCase__Id: number = 1;
 
-		const expectedData: __target__ = null;
+		const expectedData: __PascalCase__ = null;
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await __target__Service.deleteSingle(__target_lower__Id);
+		const actual = await __PascalCase__Service.deleteSingle(__camelCase__Id);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -144,11 +144,11 @@ describe('Function deleteSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const __target_lower__Id: number = -1;
+			const __camelCase__Id: number = -1;
 
 			// act
 			const action = async () => {
-				await __target__Service.deleteSingle(__target_lower__Id);
+				await __PascalCase__Service.deleteSingle(__camelCase__Id);
 			};
 
 			// assert

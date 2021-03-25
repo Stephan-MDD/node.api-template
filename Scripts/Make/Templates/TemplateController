@@ -2,45 +2,45 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 /// modules
-import { __target__Service } from '../Services';
-import { __target__ } from '../Models';
+import { __PascalCase__Service } from '../Services';
+import { __PascalCase__ } from '../Models';
 
 /// content
-const route: string = '/__target_lower__';
+const route: string = '/__camelCase__';
 const router: Router = Router();
 
-// get all __target_lower__
+// get all __camelCase__
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-	res.locals.serviceResponse = await __target__Service.getAll();
+	res.locals.serviceResponse = await __PascalCase__Service.getAll();
 	next();
 });
 
-// get single __target_lower__
+// get single __camelCase__
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	res.locals.serviceResponse = await __target__Service.getSingle(id);
+	res.locals.serviceResponse = await __PascalCase__Service.getSingle(id);
 	next();
 });
 
-// create single __target_lower__
+// create single __camelCase__
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-	const __target_lower__: __target__ = req.body;
-	res.locals.serviceResponse = await __target__Service.addSingle(__target_lower__);
+	const __camelCase__: __PascalCase__ = req.body;
+	res.locals.serviceResponse = await __PascalCase__Service.addSingle(__camelCase__);
 	next();
 });
 
-// update single __target_lower__
+// update single __camelCase__
 router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	const __target_lower__: __target__ = req.body;
-	res.locals.serviceResponse = await __target__Service.updateSingle(id, __target_lower__);
+	const __camelCase__: __PascalCase__ = req.body;
+	res.locals.serviceResponse = await __PascalCase__Service.updateSingle(id, __camelCase__);
 	next();
 });
 
-// delete single __target_lower__
+// delete single __camelCase__
 router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
 	const id: number = Number(req.params.id);
-	res.locals.serviceResponse = await __target__Service.deleteSingle(id);
+	res.locals.serviceResponse = await __PascalCase__Service.deleteSingle(id);
 	next();
 });
 
