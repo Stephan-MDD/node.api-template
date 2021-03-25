@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Unique } from 'typeorm';
 
 @Entity()
 export default class User extends BaseEntity {
@@ -19,7 +19,7 @@ export default class User extends BaseEntity {
 	@Column()
 	name: string;
 
-	@Column()
+	@Column({ unique: true })
 	username: string;
 
 	@Column()

@@ -84,10 +84,18 @@ Test/           # for service testing
 
 -   `JWT_SECRET`
 
-**PostgreSQL Configurations**
+**Bcrypt Configurations**
 
--   `DB_HOST`
--   `DB_PORT`
--   `DB_NAME`
--   `DB_USERNAME`
--   `DB_PASSWORD`
+-   `BCRYPT_SALT`
+
+**TypeORM PostgreSQL Configurations**
+
+-   `TYPEORM_CONNECTION = postgres`
+-   `TYPEORM_HOST = localhost`
+-   `TYPEORM_USERNAME` `NotPublic`
+-   `TYPEORM_PASSWORD` `NotPublic`
+-   `TYPEORM_DATABASE` `NotPublic`
+-   `TYPEORM_PORT = 5432`
+-   `TYPEORM_SYNCHRONIZE = true`
+-   `TYPEORM_LOGGING = true` logs generated sql queries
+-   `TYPEORM_ENTITIES = Src/Entities/*.ts`

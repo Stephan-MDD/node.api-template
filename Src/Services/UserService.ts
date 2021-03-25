@@ -1,13 +1,8 @@
+import bcrypt from 'bcrypt';
+
 import ServiceResponse from './ServiceResponse';
 import { User } from '../Entities';
 import { HttpCodes } from '../Enums';
-
-/**
- * add try catch for errors
- *
- * add connection in controller
- * - try catch finally -> close connection
- */
 
 export async function getAll(): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
@@ -37,10 +32,12 @@ export async function addSingle(userNew: User): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
 	const user: User = new User();
 
-	// add bcrypt for password
+	const salt: string = String(process.env.BCRYPT_SALT);
+	const passwordHash = await bcrypt.hash(userNew.password, salt);
+
 	user.name = userNew.name;
 	user.username = userNew.username;
-	user.password = userNew.password;
+	user.password = passwordHash;
 	await user.save();
 
 	response.data = user; // DTO?
