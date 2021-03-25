@@ -1,5 +1,5 @@
 import ServiceResponse from './ServiceResponse';
-import { __PascalCase__ } from '../Models';
+import { __PascalCase__ } from '../Entities';
 
 export async function getAll(): Promise<ServiceResponse> {
 	throw new Error('Not Implemented');

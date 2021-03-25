@@ -1,16 +1,16 @@
-import { UserService } from '../Services';
+import { ServiceResponse, UserService } from '../Services';
 import { HttpCodes } from '../Enums';
-import { User } from '../Models';
+import { User } from '../Entities';
 
 describe('Function getAll', () => {
 	test('Should return User[]', async () => {
 		// arrange
-		const expectedData: User[] = null;
+		const expectedData: User[] = [];
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await UserService.getAll();
+		const actual: ServiceResponse = await UserService.getAll();
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -24,12 +24,12 @@ describe('Function getSingle', () => {
 		// arrange
 		const userId = 1;
 
-		const expectedData: User = null;
+		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await UserService.getSingle(userId);
+		const actual: ServiceResponse = await UserService.getSingle(userId);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -58,12 +58,12 @@ describe('Function addSingle', () => {
 		// arrange
 		const user: User = new User();
 
-		const expectedData: User = null;
+		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await UserService.addSingle(user);
+		const actual: ServiceResponse = await UserService.addSingle(user);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -93,12 +93,12 @@ describe('Function updateSingle', () => {
 		const userId: number = 1;
 		const user: User = new User();
 
-		const expectedData: User = null;
+		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await UserService.updateSingle(userId, user);
+		const actual: ServiceResponse = await UserService.updateSingle(userId, user);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -128,12 +128,12 @@ describe('Function deleteSingle', () => {
 		// arrange
 		const userId: number = 1;
 
-		const expectedData: User = null;
+		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual = await UserService.deleteSingle(userId);
+		const actual: ServiceResponse = await UserService.deleteSingle(userId);
 
 		// assert
 		expect(expectedData).toBe(actual.data);

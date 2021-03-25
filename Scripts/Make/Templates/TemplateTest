@@ -1,6 +1,6 @@
 import { __PascalCase__Service } from '../Services';
 import { HttpCodes } from '../Enums';
-import { __PascalCase__ } from '../Models';
+import { __PascalCase__ } from '../Entities';
 
 describe('Function getAll', () => {
 	test('Should return __PascalCase__[]', async () => {
