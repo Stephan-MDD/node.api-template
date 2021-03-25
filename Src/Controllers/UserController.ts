@@ -16,15 +16,10 @@ const router: Router = Router();
 router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
 	let connection: Connection = await createConnection();
 
-	try {
-		const serviceResponse: ServiceResponse = await UserService.getAll();
-		res.locals.serviceResponse = serviceResponse;
-	} catch (error) {
-		throw error;
-	} finally {
-		connection.close();
-	}
+	const serviceResponse: ServiceResponse = await UserService.getAll();
+	res.locals.serviceResponse = serviceResponse;
 
+	connection.close();
 	next();
 });
 
@@ -33,15 +28,10 @@ router.get('/:id', authenticate(), async (req: Request, res: Response, next: Nex
 	const connection: Connection = await createConnection();
 	const id: number = Number(req.params.id);
 
-	try {
-		const serviceResponse: ServiceResponse = await UserService.getSingle(id);
-		res.locals.serviceResponse = serviceResponse;
-	} catch (error) {
-		throw error;
-	} finally {
-		connection.close();
-	}
+	const serviceResponse: ServiceResponse = await UserService.getSingle(id);
+	res.locals.serviceResponse = serviceResponse;
 
+	connection.close();
 	next();
 });
 
@@ -50,15 +40,10 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 	const connection: Connection = await createConnection();
 	const user: User = req.body; // att:: apply dto
 
-	try {
-		const serviceResponse: ServiceResponse = await UserService.addSingle(user);
-		res.locals.serviceResponse = serviceResponse;
-	} catch (error) {
-		throw error;
-	} finally {
-		connection.close();
-	}
+	const serviceResponse: ServiceResponse = await UserService.addSingle(user);
+	res.locals.serviceResponse = serviceResponse;
 
+	connection.close();
 	next();
 });
 
@@ -68,15 +53,10 @@ router.put('/:id', authenticate(), async (req: Request, res: Response, next: Nex
 	const id: number = Number(req.params.id);
 	const user: User = req.body; // att:: apply dto
 
-	try {
-		const serviceResponse: ServiceResponse = await UserService.updateSingle(id, user);
-		res.locals.serviceResponse = serviceResponse;
-	} catch (error) {
-		throw error;
-	} finally {
-		connection.close();
-	}
+	const serviceResponse: ServiceResponse = await UserService.updateSingle(id, user);
+	res.locals.serviceResponse = serviceResponse;
 
+	connection.close();
 	next();
 });
 
@@ -85,15 +65,10 @@ router.delete('/:id', authenticate(), async (req: Request, res: Response, next: 
 	const connection: Connection = await createConnection();
 	const id: number = Number(req.params.id);
 
-	try {
-		const serviceResponse: ServiceResponse = await UserService.deleteSingle(id);
-		res.locals.serviceResponse = serviceResponse;
-	} catch (error) {
-		throw error;
-	} finally {
-		connection.close();
-	}
+	const serviceResponse: ServiceResponse = await UserService.deleteSingle(id);
+	res.locals.serviceResponse = serviceResponse;
 
+	connection.close();
 	next();
 });
 

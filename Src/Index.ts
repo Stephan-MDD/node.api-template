@@ -20,10 +20,9 @@ Object.values(Controllers).forEach((controller) => {
 	app.use(controller.route, controller.router);
 });
 
-app.use(Log.clientErrors());
-app.use(Log.serverErrors());
-
+app.use(Log.error());
 app.use(Monitor.conclude());
+// handle unhanded errors
 
 // initialize server
 app.listen(port, () => console.log(`Server listening on http://localhost:${port}`));
