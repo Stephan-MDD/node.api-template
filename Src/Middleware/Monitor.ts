@@ -28,6 +28,9 @@ export function conclude() {
 		// error message
 		const errorMessage: string | undefined = undefined; // res.locals.error?.message;
 
+		// error message
+		const errorType: string | undefined = res.locals.error?.type;
+
 		// timestamp for request entry
 		const entryTime: number = res.locals.entryTime;
 
@@ -48,7 +51,7 @@ export function conclude() {
 		const CPU_Usage = process.cpuUsage();
 
 		// log for development
-		console.table({ errorName, errorMessage, initialErrorName, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
+		console.table({ errorName, errorMessage, initialErrorName, errorType, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
 
 		const { status, ...response } = res.locals.serviceResponse;
 
