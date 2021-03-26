@@ -2,20 +2,6 @@ import * as os from 'os';
 import { Request, Response, NextFunction } from 'express';
 import { UserRoles, HttpCodes } from '../Enums';
 
-/** Monitor Middleware
- * Save meta data to database
- * - request
- * - user
- * - system (CPU, RAM, ...)
- * - response time
- * - errors thrown
- * - ect.
- * (Ignore Editor+)
- *
- * Create endpoint to fetch meta data
- * (Editor+ only)
- */
-
 export function initiate() {
 	return async (req: Request, res: Response, next: NextFunction) => {
 		res.locals.entryTime = Date.now();
@@ -25,23 +11,49 @@ export function initiate() {
 
 export function conclude() {
 	return async (req: Request, res: Response, next: NextFunction) => {
-		// save meta data to database
-
+		// ignores users with role above default
 		if (res.locals.userRole > UserRoles.Default) return next();
 
+		// save meta data to database
+
+		// user requesting
+		// const userId: number = res.locals.userId;
+
+		// error thrown to middleware
+		const errorType: string | null = res.locals.error?.name;
+
+		// error initially thrown
+		const initialName: string | null = res.locals.error?.initialName;
+
+		// error message
+		const errorMessage: string | undefined = undefined; // res.locals.error?.message;
+
+		// timestamp for request entry
+		const entryTime: number = res.locals.entryTime;
+
+		// process time for request
 		const processTime: number = Date.now() - res.locals.entryTime;
+
+		// requested url
 		const url: string = req.url;
+
+		// requested http method
 		const method: string = req.method;
-		const totalMemory: number = os.totalmem();
-		const freeMemory: number = os.freemem();
+
+		// current memory usage
+		const memoryUsage: number = os.totalmem() - os.freemem();
+
+		// current CPU usage
 		const CPUs = os.cpus();
 		const CPU_Usage = process.cpuUsage();
 
-		console.table({ processTime, url, method, totalMemory, freeMemory /*, CPUs, CPU_Usage*/ });
+		// log for development
+		console.table({ errorType, errorMessage, initialName, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
 
 		const { status, ...response } = res.locals.serviceResponse;
 
-		if (response) res.status(status).json(response);
-		else res.send(status || HttpCodes.InternalServerError);
+		if (response) return res.status(status).json(response);
+		return res.json({ a: 'a' });
+		// else res.send(status || HttpCodes.InternalServerError);
 	};
 }

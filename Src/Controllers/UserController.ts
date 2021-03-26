@@ -14,61 +14,89 @@ const router: Router = Router();
 
 // get all user
 router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
-	let connection: Connection = await createConnection();
+	const connection: Connection = await createConnection();
 
-	const serviceResponse: ServiceResponse = await UserService.getAll();
-	res.locals.serviceResponse = serviceResponse;
+	try {
+		const serviceResponse: ServiceResponse = await UserService.getAll();
+		res.locals.serviceResponse = serviceResponse;
+	} catch (error) {
+		next(error);
+	} finally {
+		await connection.close();
+	}
 
-	connection.close();
 	next();
 });
 
 // get user
-router.get('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
-	const id: number = Number(req.params.id);
+router.get(
+	'/:email',
+	/*authenticate(), */ async (req: Request, res: Response, next: NextFunction) => {
+		const connection: Connection = await createConnection();
+		const email: string = req.params.email;
 
-	const serviceResponse: ServiceResponse = await UserService.getSingle(id);
-	res.locals.serviceResponse = serviceResponse;
+		try {
+			const serviceResponse: ServiceResponse = await UserService.getSingle(email);
+			res.locals.serviceResponse = serviceResponse;
+		} catch (error) {
+			next(error);
+		} finally {
+			await connection.close();
+		}
 
-	connection.close();
-	next();
-});
+		next();
+	}
+);
 
 // create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 	const connection: Connection = await createConnection();
 	const user: User = req.body; // att:: apply dto
 
-	const serviceResponse: ServiceResponse = await UserService.addSingle(user);
-	res.locals.serviceResponse = serviceResponse;
+	try {
+		const serviceResponse: ServiceResponse = await UserService.addSingle(user);
+		res.locals.serviceResponse = serviceResponse;
+	} catch (error) {
+		next(error);
+	} finally {
+		await connection.close();
+	}
 
-	connection.close();
 	next();
 });
 
 // update user
-router.put('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const connection: Connection = await createConnection();
-	const id: number = Number(req.params.id);
+	const email: string = req.params.email;
 	const user: User = req.body; // att:: apply dto
 
-	const serviceResponse: ServiceResponse = await UserService.updateSingle(id, user);
-	res.locals.serviceResponse = serviceResponse;
+	try {
+		const serviceResponse: ServiceResponse = await UserService.updateSingle(email, user);
+		res.locals.serviceResponse = serviceResponse;
+	} catch (error) {
+		next(error);
+	} finally {
+		await connection.close();
+	}
 
-	connection.close();
 	next();
 });
 
 // delete user
-router.delete('/:id', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const connection: Connection = await createConnection();
-	const id: number = Number(req.params.id);
+	const email: string = req.params.id;
 
-	const serviceResponse: ServiceResponse = await UserService.deleteSingle(id);
-	res.locals.serviceResponse = serviceResponse;
+	try {
+		const serviceResponse: ServiceResponse = await UserService.deleteSingle(email);
+		res.locals.serviceResponse = serviceResponse;
+	} catch (error) {
+		next(error);
+	} finally {
+		await connection.close();
+	}
 
-	connection.close();
 	next();
 });
 

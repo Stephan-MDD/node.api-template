@@ -2,10 +2,8 @@ import { BaseError } from '..';
 import { HttpCodes } from '../../Enums';
 
 export default class ServerError extends BaseError {
-	type: string = 'server';
-
-	constructor(status: HttpCodes, message?: string) {
-		super(status, message);
+	constructor(status: HttpCodes, message: string, initialError?: string) {
+		super(status, message, initialError);
 
 		Object.setPrototypeOf(this, ServerError.prototype);
 	}

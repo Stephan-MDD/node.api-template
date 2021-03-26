@@ -22,14 +22,14 @@ describe('Function getAll', () => {
 describe('Function getSingle', () => {
 	test('Should return User', async () => {
 		// arrange
-		const userId = 1;
+		const email: string = '';
 
 		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual: ServiceResponse = await UserService.getSingle(userId);
+		const actual: ServiceResponse = await UserService.getSingle(email);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -40,11 +40,11 @@ describe('Function getSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const userId = -1;
+			const email: string = '';
 
 			// act
 			const action = async () => {
-				await UserService.getSingle(userId);
+				await UserService.getSingle(email);
 			};
 
 			// assert
@@ -90,7 +90,7 @@ describe('Function addSingle', () => {
 describe('Function updateSingle', () => {
 	test('Should update User', async () => {
 		// arrange
-		const userId: number = 1;
+		const email: string = '';
 		const user: User = new User();
 
 		const expectedData: User = new User();
@@ -98,7 +98,7 @@ describe('Function updateSingle', () => {
 		const expectedMessage: string = '';
 
 		// act
-		const actual: ServiceResponse = await UserService.updateSingle(userId, user);
+		const actual: ServiceResponse = await UserService.updateSingle(email, user);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -109,12 +109,12 @@ describe('Function updateSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const userId: number = -1;
+			const email: string = '';
 			const user: User = new User();
 
 			// act
 			const action = async () => {
-				await UserService.updateSingle(userId, user);
+				await UserService.updateSingle(email, user);
 			};
 
 			// assert
@@ -126,14 +126,14 @@ describe('Function updateSingle', () => {
 describe('Function deleteSingle', () => {
 	test('Should delete User', async () => {
 		// arrange
-		const userId: number = 1;
+		const email: string = '';
 
 		const expectedData: User = new User();
 		const expectedStatus: HttpCodes = HttpCodes.Ok;
 		const expectedMessage: string = '';
 
 		// act
-		const actual: ServiceResponse = await UserService.deleteSingle(userId);
+		const actual: ServiceResponse = await UserService.deleteSingle(email);
 
 		// assert
 		expect(expectedData).toBe(actual.data);
@@ -144,11 +144,11 @@ describe('Function deleteSingle', () => {
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const userId: number = -1;
+			const email: string = '';
 
 			// act
 			const action = async () => {
-				await UserService.deleteSingle(userId);
+				await UserService.deleteSingle(email);
 			};
 
 			// assert

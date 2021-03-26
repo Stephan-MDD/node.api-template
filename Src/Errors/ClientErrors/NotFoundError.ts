@@ -2,9 +2,9 @@ import { ClientError } from './';
 import { HttpCodes } from '../../Enums';
 
 export default class NotFoundError extends ClientError {
-	constructor(message?: string) {
-		super(HttpCodes.NotFound, message);
+	constructor(message: string, initialError?: string) {
+		super(HttpCodes.NotFound, message, initialError);
 
-		Object.setPrototypeOf(this, ClientError.prototype);
+		Object.setPrototypeOf(this, NotFoundError.prototype);
 	}
 }

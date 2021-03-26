@@ -25,4 +25,4 @@ app.use(Monitor.conclude());
 // handle unhanded errors
 
 // initialize server
-app.listen(port, () => console.log(`Server listening on http://localhost:${port}`));
+app.listen(port, () => console.log(`Server listening on \x1b[36mhttp://localhost:${port}\x1b[0m`));

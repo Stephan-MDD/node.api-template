@@ -1,13 +1,15 @@
 import { User } from '../../Entities';
 
 export default class UserDTO {
-	name: string;
-	username: string;
-	password: string;
+	email: string;
+	firstName: string;
+	lastName: string;
+	age: number;
 
 	constructor(user: User) {
-		this.name = user.name;
-		this.username = user.username;
-		this.password = user.password;
+		this.email = user.email;
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
+		this.age = user.age;
 	}
 }

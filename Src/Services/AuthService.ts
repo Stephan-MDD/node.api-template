@@ -3,7 +3,9 @@ import * as jwt from 'jsonwebtoken';
 
 /// modules
 import ServiceResponse from './ServiceResponse';
-import { HttpCodes, UserRoles } from '../Enums';
+import { UserRoles } from '../Enums';
+import { InternalServerError } from '../Errors/ServerErrors';
+import { UnauthorizedError } from '../Errors/ClientErrors';
 
 export async function authenticate(token: string, restrictTo?: UserRoles): Promise<ServiceResponse> {
 	const response = new ServiceResponse();
@@ -12,8 +14,7 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
 	if (!accessTokenSecret) {
-		response.status = HttpCodes.InternalServerError;
-		return response;
+		throw new InternalServerError('No JWT Resource found');
 	}
 
 	if (restrictTo != null) {
@@ -31,9 +32,8 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 	try {
 		const decoded: any = jwt.verify(token, accessTokenSecret);
 		response.data.userId = decoded;
-	} catch (err) {
-		console.log('token::', err);
-		response.status = HttpCodes.Unauthorized;
+	} catch (error) {
+		throw new UnauthorizedError('Invalid JWT', error);
 	}
 
 	return response;
