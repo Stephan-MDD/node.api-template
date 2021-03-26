@@ -29,24 +29,21 @@ router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Respon
 });
 
 // get user
-router.get(
-	'/:email',
-	/*authenticate(), */ async (req: Request, res: Response, next: NextFunction) => {
-		const connection: Connection = await createConnection();
-		const email: string = req.params.email;
+router.get('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
+	const connection: Connection = await createConnection();
+	const email: string = req.params.email;
 
-		try {
-			const serviceResponse: ServiceResponse = await UserService.getSingle(email);
-			res.locals.serviceResponse = serviceResponse;
-		} catch (error) {
-			next(error);
-		} finally {
-			await connection.close();
-		}
-
-		next();
+	try {
+		const serviceResponse: ServiceResponse = await UserService.getSingle(email);
+		res.locals.serviceResponse = serviceResponse;
+	} catch (error) {
+		next(error);
+	} finally {
+		await connection.close();
 	}
-);
+
+	next();
+});
 
 // create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {

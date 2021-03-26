@@ -20,10 +20,10 @@ export function conclude() {
 		// const userId: number = res.locals.userId;
 
 		// error thrown to middleware
-		const errorType: string | null = res.locals.error?.name;
+		const errorName: string | null = res.locals.error?.name;
 
 		// error initially thrown
-		const initialName: string | null = res.locals.error?.initialName;
+		const initialErrorName: string | null = res.locals.error?.initialName;
 
 		// error message
 		const errorMessage: string | undefined = undefined; // res.locals.error?.message;
@@ -48,7 +48,7 @@ export function conclude() {
 		const CPU_Usage = process.cpuUsage();
 
 		// log for development
-		console.table({ errorType, errorMessage, initialName, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
+		console.table({ errorName, errorMessage, initialErrorName, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
 
 		const { status, ...response } = res.locals.serviceResponse;
 

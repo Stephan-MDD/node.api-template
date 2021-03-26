@@ -74,6 +74,7 @@ export async function updateSingle(email: string, userUpdate: User): Promise<Ser
 	if (userUpdate.lastName) user.lastName = userUpdate.lastName;
 	if (userUpdate.age) user.age = userUpdate.age;
 	if (userUpdate.password) user.password = userUpdate.password;
+	if (userUpdate.role) user.role = userUpdate.role;
 
 	await user.save();
 	response.data = new UserDTO(user);
