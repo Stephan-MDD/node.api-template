@@ -1,22 +1,15 @@
 import bcrypt from 'bcrypt';
 
-import ServiceResponse from './ServiceResponse';
 import { User } from '../Entities';
-import { HttpCodes } from '../Enums';
 import { UserDTO } from '../DTOs/User';
 import { BadRequestError, NotFoundError } from '../Errors/ClientErrors';
 
-export async function getAll(): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
+export async function getAll(): Promise<UserDTO[]> {
 	const allUsers: User[] = await User.find();
-
-	response.data = allUsers.map((user) => new UserDTO(user));
-	return response;
+	return allUsers.map((user) => new UserDTO(user));
 }
 
-export async function getSingle(email: string): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
-
+export async function getSingle(email: string): Promise<UserDTO> {
 	try {
 		const user: User | undefined = await User.findOne({ email });
 
@@ -25,25 +18,19 @@ export async function getSingle(email: string): Promise<ServiceResponse> {
 			throw new NotFoundError(`Could not find user with id: ${email}`);
 		}
 
-		response.data = user;
-
-		return response;
+		return new UserDTO(user);
 	} catch (error) {
-		console.log(error);
 		throw error;
 	}
 }
 
-export async function addSingle(userNew: User): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
-	const user: User = new User();
-
+export async function addSingle(userNew: User): Promise<UserDTO> {
 	const salt: number = Number(process.env.BCRYPT_SALT);
 	const passwordHash = await bcrypt.hash(userNew.password, salt);
 
+	const user: User = new User();
 	user.email = userNew.email;
 	user.password = passwordHash;
-
 	user.firstName = userNew.firstName;
 	user.lastName = userNew.lastName;
 	user.age = userNew.age;
@@ -54,14 +41,10 @@ export async function addSingle(userNew: User): Promise<ServiceResponse> {
 		throw new BadRequestError(error.message, error.name);
 	}
 
-	response.data = new UserDTO(user);
-	response.status = HttpCodes.Created;
-
-	return response;
+	return new UserDTO(user);
 }
 
-export async function updateSingle(email: string, userUpdate: User): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
+export async function updateSingle(email: string, userUpdate: User): Promise<UserDTO> {
 	const user: User | undefined = await User.findOne({ email });
 
 	// user not found
@@ -77,13 +60,10 @@ export async function updateSingle(email: string, userUpdate: User): Promise<Ser
 	if (userUpdate.role) user.role = userUpdate.role;
 
 	await user.save();
-	response.data = new UserDTO(user);
-
-	return response;
+	return new UserDTO(user);
 }
 
-export async function deleteSingle(email: string): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
+export async function deleteSingle(email: string): Promise<void> {
 	const user: User | undefined = await User.findOne({ email });
 
 	// user not found
@@ -92,7 +72,4 @@ export async function deleteSingle(email: string): Promise<ServiceResponse> {
 	}
 
 	await user.remove();
-	response.status = HttpCodes.Accepted;
-
-	return response;
 }

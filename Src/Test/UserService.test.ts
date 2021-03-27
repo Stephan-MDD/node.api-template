@@ -1,21 +1,18 @@
-import { ServiceResponse, UserService } from '../Services';
+import { UserService } from '../Services';
 import { HttpCodes } from '../Enums';
 import { User } from '../Entities';
+import { UserDTO } from '../DTOs/User';
 
 describe('Function getAll', () => {
 	test('Should return User[]', async () => {
 		// arrange
-		const expectedData: User[] = [];
-		const expectedStatus: HttpCodes = HttpCodes.Ok;
-		const expectedMessage: string = '';
+		const expected: UserDTO[] = [];
 
 		// act
-		const actual: ServiceResponse = await UserService.getAll();
+		const actual: UserDTO[] = await UserService.getAll();
 
 		// assert
-		expect(expectedData).toBe(actual.data);
-		expect(expectedStatus).toBe(actual.status);
-		expect(expectedMessage).toBe(actual.message);
+		expect(expected).toBe(actual);
 	});
 });
 
@@ -23,18 +20,13 @@ describe('Function getSingle', () => {
 	test('Should return User', async () => {
 		// arrange
 		const email: string = '';
-
-		const expectedData: User = new User();
-		const expectedStatus: HttpCodes = HttpCodes.Ok;
-		const expectedMessage: string = '';
+		const expected: UserDTO = new User();
 
 		// act
-		const actual: ServiceResponse = await UserService.getSingle(email);
+		const actual: UserDTO = await UserService.getSingle(email);
 
 		// assert
-		expect(expectedData).toBe(actual.data);
-		expect(expectedStatus).toBe(actual.status);
-		expect(expectedMessage).toBe(actual.message);
+		expect(expected).toBe(actual);
 	});
 
 	describe('Error Handling', () => {
@@ -57,18 +49,13 @@ describe('Function addSingle', () => {
 	test('Should add User', async () => {
 		// arrange
 		const user: User = new User();
-
-		const expectedData: User = new User();
-		const expectedStatus: HttpCodes = HttpCodes.Ok;
-		const expectedMessage: string = '';
+		const expected: UserDTO = new User();
 
 		// act
-		const actual: ServiceResponse = await UserService.addSingle(user);
+		const actual: UserDTO = await UserService.addSingle(user);
 
 		// assert
-		expect(expectedData).toBe(actual.data);
-		expect(expectedStatus).toBe(actual.status);
-		expect(expectedMessage).toBe(actual.message);
+		expect(expected).toBe(actual);
 	});
 
 	describe('Error Handling', () => {
@@ -93,17 +80,13 @@ describe('Function updateSingle', () => {
 		const email: string = '';
 		const user: User = new User();
 
-		const expectedData: User = new User();
-		const expectedStatus: HttpCodes = HttpCodes.Ok;
-		const expectedMessage: string = '';
+		const expected: UserDTO = new User();
 
 		// act
-		const actual: ServiceResponse = await UserService.updateSingle(email, user);
+		const actual: UserDTO = await UserService.updateSingle(email, user);
 
 		// assert
-		expect(expectedData).toBe(actual.data);
-		expect(expectedStatus).toBe(actual.status);
-		expect(expectedMessage).toBe(actual.message);
+		expect(expected).toBe(actual);
 	});
 
 	describe('Error Handling', () => {
@@ -128,17 +111,14 @@ describe('Function deleteSingle', () => {
 		// arrange
 		const email: string = '';
 
-		const expectedData: User = new User();
-		const expectedStatus: HttpCodes = HttpCodes.Ok;
-		const expectedMessage: string = '';
+		const expected: UserDTO = new User();
 
 		// act
-		const actual: ServiceResponse = await UserService.deleteSingle(email);
+		await UserService.deleteSingle(email);
 
 		// assert
-		expect(expectedData).toBe(actual.data);
-		expect(expectedStatus).toBe(actual.status);
-		expect(expectedMessage).toBe(actual.message);
+		// expect to throw NotFound on getSingle()
+		// expect not to throw
 	});
 
 	describe('Error Handling', () => {

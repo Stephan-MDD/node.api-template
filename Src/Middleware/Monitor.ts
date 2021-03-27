@@ -20,10 +20,10 @@ export function conclude() {
 		// const userId: number = res.locals.userId;
 
 		// error thrown to middleware
-		const errorName: string | null = res.locals.error?.name;
+		const errorName: string | undefined = res.locals.error?.name;
 
 		// error initially thrown
-		const initialErrorName: string | null = res.locals.error?.initialName;
+		const initialErrorName: string | undefined = res.locals.error?.initialName; // ATT:: returns object?
 
 		// error message
 		const errorMessage: string | undefined = undefined; // res.locals.error?.message;
@@ -53,10 +53,9 @@ export function conclude() {
 		// log for development
 		console.table({ errorName, errorMessage, initialErrorName, errorType, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
 
-		const { status, ...response } = res.locals.serviceResponse;
+		const { status, response } = res.locals;
 
 		if (response) return res.status(status).json(response);
-		return res.json({ a: 'a' });
-		// else res.send(status || HttpCodes.InternalServerError);
+		else res.send(status || HttpCodes.InternalServerError);
 	};
 }

@@ -2,15 +2,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 /// modules
-import { UserRoles } from '../Enums';
-import { authenticate } from './AuthController';
+import { HttpCodes, UserRoles } from '../Enums';
+import { Authenticate } from '../Middleware';
 import { MonitorService } from '../Services';
 
 /// content
 const route: string = '/monitor';
 const router: Router = Router();
 
-router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
+router.get('/request', Authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
 	const { entry, exit } = req.query;
 
 	// data format: yyyy-mm-ddThh-mm-ss (Minimized ISO Format)
@@ -31,9 +31,9 @@ router.get('/request', authenticate(UserRoles.Editor), async (req: Request, res:
 	if (entryDate.toString() === 'Invalid Date') entryDate = null;
 	if (exitDate.toString() === 'Invalid Date') exitDate = null;
 
-	const serviceResponse = await MonitorService.getRequests(entryDate, exitDate);
-	res.locals.serviceResponse = serviceResponse;
-
+	const monitorDTOs /*: MonitorDTO[] */ = await MonitorService.getRequests(entryDate, exitDate);
+	res.locals.response = monitorDTOs;
+	res.locals.status = HttpCodes.Accepted;
 	next();
 });
 

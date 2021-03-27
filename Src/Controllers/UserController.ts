@@ -1,45 +1,40 @@
 /// libraries
 import { Router, Request, Response, NextFunction } from 'express';
-import { createConnection, Connection } from 'typeorm';
 
 /// modules
-import { UserRoles } from '../Enums';
-import { authenticate } from './AuthController';
-import { ServiceResponse, UserService } from '../Services';
+import { HttpCodes, UserRoles } from '../Enums';
+import { Authenticate } from '../Middleware';
+import { UserService } from '../Services';
 import { User } from '../Entities';
+import { UserDTO } from '../DTOs/User';
 
 /// content
 const route: string = '/user';
 const router: Router = Router();
 
 // get all user
-router.get('/', authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
-
+router.get('/', Authenticate(UserRoles.Editor), async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const serviceResponse: ServiceResponse = await UserService.getAll();
-		res.locals.serviceResponse = serviceResponse;
+		const userDTOs: UserDTO[] = await UserService.getAll();
+		res.locals.response = userDTOs;
+		res.locals.status = HttpCodes.Accepted;
 	} catch (error) {
 		next(error);
-	} finally {
-		await connection.close();
 	}
 
 	next();
 });
 
 // get user
-router.get('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
+router.get('/:email', Authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const email: string = req.params.email;
 
 	try {
-		const serviceResponse: ServiceResponse = await UserService.getSingle(email);
-		res.locals.serviceResponse = serviceResponse;
+		const userDTO: UserDTO = await UserService.getSingle(email);
+		res.locals.response = userDTO;
+		res.locals.status = HttpCodes.Accepted;
 	} catch (error) {
 		next(error);
-	} finally {
-		await connection.close();
 	}
 
 	next();
@@ -47,51 +42,44 @@ router.get('/:email', authenticate(), async (req: Request, res: Response, next: 
 
 // create user
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
 	const user: User = req.body; // att:: apply dto
 
 	try {
-		const serviceResponse: ServiceResponse = await UserService.addSingle(user);
-		res.locals.serviceResponse = serviceResponse;
+		const userDTO: UserDTO = await UserService.addSingle(user);
+		res.locals.response = userDTO;
+		res.locals.status = HttpCodes.Accepted;
 	} catch (error) {
 		next(error);
-	} finally {
-		await connection.close();
 	}
 
 	next();
 });
 
 // update user
-router.put('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
+router.put('/:email', Authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const email: string = req.params.email;
 	const user: User = req.body; // att:: apply dto
 
 	try {
-		const serviceResponse: ServiceResponse = await UserService.updateSingle(email, user);
-		res.locals.serviceResponse = serviceResponse;
+		const userDTO: UserDTO = await UserService.updateSingle(email, user);
+		res.locals.response = userDTO;
+		res.locals.status = HttpCodes.Accepted;
 	} catch (error) {
 		next(error);
-	} finally {
-		await connection.close();
 	}
 
 	next();
 });
 
 // delete user
-router.delete('/:email', authenticate(), async (req: Request, res: Response, next: NextFunction) => {
-	const connection: Connection = await createConnection();
+router.delete('/:email', Authenticate(), async (req: Request, res: Response, next: NextFunction) => {
 	const email: string = req.params.id;
 
 	try {
-		const serviceResponse: ServiceResponse = await UserService.deleteSingle(email);
-		res.locals.serviceResponse = serviceResponse;
+		await UserService.deleteSingle(email);
+		res.locals.status = HttpCodes.Accepted;
 	} catch (error) {
 		next(error);
-	} finally {
-		await connection.close();
 	}
 
 	next();

@@ -2,14 +2,14 @@
 import * as jwt from 'jsonwebtoken';
 
 /// modules
-import ServiceResponse from './ServiceResponse';
+import { UserService } from '.';
 import { UserRoles } from '../Enums';
 import { InternalServerError } from '../Errors/ServerErrors';
 import { UnauthorizedError } from '../Errors/ClientErrors';
+import { UserDTO } from '../DTOs/User';
 
-export async function authenticate(token: string, restrictTo?: UserRoles): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
-	response.data = { userId: null, userRole: null };
+export async function authenticate(token: string, restrictTo?: UserRoles): Promise<any> {
+	const authentication: { userId?: string; userRole?: UserRoles } = {};
 
 	const accessTokenSecret: string | undefined = process.env.JWT_SECRET;
 
@@ -17,7 +17,25 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 		throw new InternalServerError('No JWT Resource found');
 	}
 
-	if (restrictTo != null) {
+	try {
+		const decoded: any = jwt.verify(token, accessTokenSecret);
+
+		if (decoded.email === undefined) {
+			// throw error
+		}
+
+		if (decoded.iat + 1 /*env value*/ < Date.now()) {
+			// throw error
+		}
+
+		authentication.userId = decoded.email;
+	} catch (error) {
+		throw new UnauthorizedError('Invalid JWT', error.name);
+	}
+
+	if (authentication.userId && restrictTo != null) {
+		// const user: UserDTO = await UserService.getSingle(authentication.userId);
+		//if (user.role) {}
 		// att:: validate restriction here...
 		/** handle user roles
 		 * - banned -> return forbidden
@@ -29,12 +47,5 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 
 	// response.data.userRole = ?
 
-	try {
-		const decoded: any = jwt.verify(token, accessTokenSecret);
-		response.data.userId = decoded;
-	} catch (error) {
-		throw new UnauthorizedError('Invalid JWT', error);
-	}
-
-	return response;
+	return authentication;
 }

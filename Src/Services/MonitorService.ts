@@ -1,9 +1,5 @@
-import ServiceResponse from './ServiceResponse';
 // import { Monitor } from '../Models';
 
-// att:: change type 'any' to correct model (monitor)?
-export async function getRequests(entry: Date | null, exit: Date | null): Promise<ServiceResponse> {
-	const response = new ServiceResponse();
-	response.data = null;
-	return response;
+export async function getRequests(entry: Date | null, exit: Date | null): Promise<any /*: MonitorDTO[] */> {
+	throw new Error('Not Implemented');
 }
