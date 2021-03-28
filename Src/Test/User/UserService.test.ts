@@ -1,19 +1,22 @@
 import 'reflect-metadata';
-import { createConnection, getConnection } from 'typeorm';
+import * as dotenv from 'dotenv';
 
 import { UserService } from '../../Services';
 import { User } from '../../Entities';
 import { UserDTO } from '../../DTOs/User';
+import Database from '../../Database';
+import { NotFoundError } from '../../Errors/ClientErrors';
 
 beforeAll(async () => {
-	await createConnection();
+	dotenv.config();
+	await Database.initiate();
 });
 
 afterAll(async () => {
-	await getConnection().close();
+	await Database.conclude();
 });
 
-describe('Function getAll', () => {
+describe.skip('Function getAll', () => {
 	test('Should return User[]', async () => {
 		// arrange
 		const expected: UserDTO[] = [];
@@ -29,20 +32,28 @@ describe('Function getAll', () => {
 describe('Function getSingle', () => {
 	test('Should return User', async () => {
 		// arrange
-		const email: string = '';
-		const expected: UserDTO = new User();
+		const email: string = 'marc@mail.com';
+
+		const expected: UserDTO = {
+			firstName: 'marc',
+			lastName: 'noah',
+			age: 26,
+			email: 'marc@mail.com',
+			password: 'secret',
+			role: 2,
+		};
 
 		// act
 		const actual: UserDTO = await UserService.getSingle(email);
 
 		// assert
-		expect(expected).toBe(actual);
+		expect(expected.firstName).toBe(actual.firstName);
 	});
 
 	describe('Error Handling', () => {
 		test('should throw Error', () => {
 			// arrange
-			const email: string = '';
+			const email: string = 'invalid@mail.com';
 
 			// act
 			const action = async () => {
@@ -50,12 +61,12 @@ describe('Function getSingle', () => {
 			};
 
 			// assert
-			expect(action).rejects.toThrow(Error);
+			expect(action).rejects.toThrow(NotFoundError);
 		});
 	});
 });
 
-describe('Function addSingle', () => {
+describe.skip('Function addSingle', () => {
 	test('Should add User', async () => {
 		// arrange
 		const user: User = new User();
@@ -84,7 +95,7 @@ describe('Function addSingle', () => {
 	});
 });
 
-describe('Function updateSingle', () => {
+describe.skip('Function updateSingle', () => {
 	test('Should update User', async () => {
 		// arrange
 		const email: string = '';
@@ -116,7 +127,7 @@ describe('Function updateSingle', () => {
 	});
 });
 
-describe('Function deleteSingle', () => {
+describe.skip('Function deleteSingle', () => {
 	test('Should delete User', async () => {
 		// arrange
 		const email: string = '';

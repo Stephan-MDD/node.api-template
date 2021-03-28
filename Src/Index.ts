@@ -1,20 +1,24 @@
 /// libraries
 import 'reflect-metadata';
-import express from 'express';
 import * as dotenv from 'dotenv';
-import { createConnection, getConnection } from 'typeorm';
+import express from 'express';
+import cors from 'cors';
 
 /// modules
 import * as Controllers from './Controllers';
 import { Monitor, Exception } from './Middleware';
+// import Database from './Database';
+import * as typeORM from 'typeorm';
 
 /// content
+dotenv.config();
 (async () => {
-	dotenv.config();
 	const port: number = Number(process.env.SERVER_PORT);
 	const app: express.Application = express();
 
-	await createConnection();
+	// await Database.initiate();
+	await typeORM.createConnection();
+	app.use(cors());
 	app.use(express.json());
 	app.use(Monitor.initiate());
 
@@ -29,4 +33,4 @@ import { Monitor, Exception } from './Middleware';
 
 	// initialize server
 	app.listen(port, () => console.log(`Server listening on \x1b[36mhttp://localhost:${port}\x1b[0m`));
-})().finally(async () => getConnection().close());
+})().finally(async () => await typeORM.getConnection().close() /*Database.conclude()*/);

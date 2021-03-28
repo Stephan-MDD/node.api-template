@@ -17,56 +17,56 @@ const route: string = '/user';
 const router: Router = Router();
 
 // get all user
-const getAll = Exception.catcher(async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response) => {
 	const userDTOs: UserDTO[] = await UserService.getAll();
 	res.locals.response = userDTOs;
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.get('/', Authenticate(UserRoles.Editor), getAll);
+router.get('/', Authenticate(UserRoles.Editor), Exception.catcher(getAll));
 
 // get user
-const getSingle = Exception.catcher(async (req: Request, res: Response) => {
+const getSingle = async (req: Request, res: Response) => {
 	const email: string = req.params.email;
 
 	const userDTO: UserDTO = await UserService.getSingle(email);
 	res.locals.response = userDTO;
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.get('/:email', Authenticate(), getSingle);
+router.get('/:email', Authenticate(), Exception.catcher(getSingle));
 
 // create user
-const addSingle = Exception.catcher(async (req: Request, res: Response) => {
+const addSingle = async (req: Request, res: Response) => {
 	const user: User = req.body; // att:: apply dto
 
 	const userDTO: UserDTO = await UserService.addSingle(user);
 	res.locals.response = userDTO;
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.post('/', addSingle);
+router.post('/', Exception.catcher(addSingle));
 
 // update user
-const updateSingle = Exception.catcher(async (req: Request, res: Response) => {
+const updateSingle = async (req: Request, res: Response) => {
 	const email: string = req.params.email;
 	const user: User = req.body; // att:: apply dto
 
 	const userDTO: UserDTO = await UserService.updateSingle(email, user);
 	res.locals.response = userDTO;
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.put('/:email', Authenticate(), updateSingle);
+router.put('/:email', Authenticate(), Exception.catcher(updateSingle));
 
 // delete user
-const deleteSingle = Exception.catcher(async (req: Request, res: Response) => {
+const deleteSingle = async (req: Request, res: Response) => {
 	const email: string = req.params.id;
 
 	await UserService.deleteSingle(email);
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.delete('/:email', Authenticate(), deleteSingle);
+router.delete('/:email', Authenticate(), Exception.catcher(deleteSingle));
 
 export default { router, route };

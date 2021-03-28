@@ -10,7 +10,7 @@ import { MonitorService } from '../Services';
 const route: string = '/monitor';
 const router: Router = Router();
 
-const getAll = Exception.catcher(async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response) => {
 	const { entry, exit } = req.query;
 
 	// data format: yyyy-mm-ddThh-mm-ss (Minimized ISO Format)
@@ -34,8 +34,8 @@ const getAll = Exception.catcher(async (req: Request, res: Response) => {
 	const monitorDTOs /*: MonitorDTO[] */ = await MonitorService.getRequests(entryDate, exitDate);
 	res.locals.response = monitorDTOs;
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.get('/', Authenticate(UserRoles.Editor), getAll);
+router.get('/', Authenticate(UserRoles.Editor), Exception.catcher(getAll));
 
 export default { router, route };

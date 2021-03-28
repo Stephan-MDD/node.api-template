@@ -1,6 +1,7 @@
 # Node API Template
 
--   Fix decorator issue when testing
+-   Setup test DB env
+-   Expose GraphQL endpoint
 
 _Make Enums & Errors globally available (namespaces)_
 

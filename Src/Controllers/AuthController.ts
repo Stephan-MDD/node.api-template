@@ -15,7 +15,7 @@ import { Exception } from '../Middleware';
 const route: string = '/auth';
 const router: Router = Router();
 
-const login = Exception.catcher(async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 	if (!email) throw new BadRequestError('No email received');
 	if (!password) throw new BadRequestError('No password received');
@@ -38,8 +38,8 @@ const login = Exception.catcher(async (req: Request, res: Response) => {
 	const token: string = jwt.sign({ email: req.body.email }, accessTokenSecret);
 	res.locals.response = { token };
 	res.locals.status = HttpCodes.Accepted;
-});
+};
 
-router.post('/login', login);
+router.post('/login', Exception.catcher(login));
 
 export default { router, route };
