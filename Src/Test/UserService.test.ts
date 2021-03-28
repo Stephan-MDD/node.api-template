@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { UserService } from '../Services';
 import { HttpCodes } from '../Enums';
 import { User } from '../Entities';

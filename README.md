@@ -1,6 +1,9 @@
 # Node API Template
 
-Make Enums & Errors globally available (namespaces)
+Make Enums & Errors globally available (namespaces)  
+Add super test
+
+-   https://www.npmjs.com/package/supertest
 
 ## Authentication
 

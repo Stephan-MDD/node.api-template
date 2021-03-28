@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { MonitorService } from '../Services';
 
 function example(shouldThrow: boolean = false) {

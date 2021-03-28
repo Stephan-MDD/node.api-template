@@ -1,4 +1,3 @@
 export * as Monitor from './Monitor';
-export * as Log from './Log';
+export * as Exception from './Exception';
 export { default as Authenticate } from './Authenticate';
-export { default as Catcher } from './Catcher';

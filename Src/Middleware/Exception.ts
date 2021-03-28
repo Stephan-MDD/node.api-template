@@ -3,8 +3,19 @@ import { Response, Request, NextFunction } from 'express';
 import { BaseError, ClientError, ServerError } from '../Errors';
 import { HttpCodes } from '../Enums';
 
+export function catcher(cb: (req: Request, res: Response) => Promise<void>) {
+	return async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			await cb(req, res);
+		} catch (error) {
+			next(error);
+		}
+		next();
+	};
+}
+
 /// content
-export function error() {
+export function log() {
 	return async (err: BaseError, req: Request, res: Response, next: NextFunction) => {
 		if (err instanceof ClientError) {
 			console.log('Logging ClientError');

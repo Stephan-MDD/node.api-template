@@ -5,8 +5,8 @@ import * as dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
 
 /// modules
-import * as Controllers from './Controllers';
-import { Monitor, Log } from './Middleware';
+import * as Routers from './Routers';
+import { Monitor, Exception } from './Middleware';
 
 /// content
 (async () => {
@@ -19,11 +19,11 @@ import { Monitor, Log } from './Middleware';
 	app.use(Monitor.initiate());
 
 	// aplites all routers
-	Object.values(Controllers).forEach((controller) => {
-		app.use(controller.route, controller.router);
+	Object.values(Routers).forEach((router) => {
+		app.use(router.route, router.router);
 	});
 
-	app.use(Log.error());
+	app.use(Exception.log());
 	app.use(Monitor.conclude());
 	// handle unhanded errors
 
