@@ -1,8 +1,17 @@
 import 'reflect-metadata';
-import { UserService } from '../Services';
-import { HttpCodes } from '../Enums';
-import { User } from '../Entities';
-import { UserDTO } from '../DTOs/User';
+import { createConnection, getConnection } from 'typeorm';
+
+import { UserService } from '../../Services';
+import { User } from '../../Entities';
+import { UserDTO } from '../../DTOs/User';
+
+beforeAll(async () => {
+	await createConnection();
+});
+
+afterAll(async () => {
+	await getConnection().close();
+});
 
 describe('Function getAll', () => {
 	test('Should return User[]', async () => {

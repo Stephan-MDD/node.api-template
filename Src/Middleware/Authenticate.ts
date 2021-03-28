@@ -1,15 +1,10 @@
 /// libraries
 import { Request, Response, NextFunction } from 'express';
-import * as jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { createConnection, Connection } from 'typeorm';
 
 /// modules
 import { UserRoles } from '../Enums';
 import { AuthService } from '../Services';
-import { UserService } from '../Services';
-import { ForbiddenError, UnauthorizedError } from '../Errors/ClientErrors';
-import { InternalServerError } from '../Errors/ServerErrors';
+import { UnauthorizedError } from '../Errors/ClientErrors';
 
 export default function authenticate(userRoles: UserRoles = UserRoles.Default) {
 	return async (req: Request, res: Response, next: NextFunction) => {

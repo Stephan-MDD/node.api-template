@@ -2,10 +2,10 @@
 import 'reflect-metadata';
 import express from 'express';
 import * as dotenv from 'dotenv';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 
 /// modules
-import * as Routers from './Routers';
+import * as Controllers from './Controllers';
 import { Monitor, Exception } from './Middleware';
 
 /// content
@@ -19,8 +19,8 @@ import { Monitor, Exception } from './Middleware';
 	app.use(Monitor.initiate());
 
 	// aplites all routers
-	Object.values(Routers).forEach((router) => {
-		app.use(router.route, router.router);
+	Object.values(Controllers).forEach((controller) => {
+		app.use(controller.route, controller.router);
 	});
 
 	app.use(Exception.log());
@@ -29,4 +29,4 @@ import { Monitor, Exception } from './Middleware';
 
 	// initialize server
 	app.listen(port, () => console.log(`Server listening on \x1b[36mhttp://localhost:${port}\x1b[0m`));
-})();
+})().finally(async () => getConnection().close());

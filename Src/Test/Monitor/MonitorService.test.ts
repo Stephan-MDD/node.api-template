@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { AuthService } from '../Services';
+import { MonitorService } from '../../Services';
 
 function example(shouldThrow: boolean = false) {
 	if (shouldThrow) throw new Error('Example Error');

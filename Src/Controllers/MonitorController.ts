@@ -2,12 +2,15 @@
 import { Router, Request, Response } from 'express';
 
 /// modules
-import { HttpCodes } from '../Enums';
-import { Exception } from '../Middleware';
+import { HttpCodes, UserRoles } from '../Enums';
+import { Authenticate, Exception } from '../Middleware';
 import { MonitorService } from '../Services';
 
 /// content
-export const getAll = Exception.catcher(async (req: Request, res: Response) => {
+const route: string = '/monitor';
+const router: Router = Router();
+
+const getAll = Exception.catcher(async (req: Request, res: Response) => {
 	const { entry, exit } = req.query;
 
 	// data format: yyyy-mm-ddThh-mm-ss (Minimized ISO Format)
@@ -32,3 +35,7 @@ export const getAll = Exception.catcher(async (req: Request, res: Response) => {
 	res.locals.response = monitorDTOs;
 	res.locals.status = HttpCodes.Accepted;
 });
+
+router.get('/', Authenticate(UserRoles.Editor), getAll);
+
+export default { router, route };

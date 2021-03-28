@@ -1,5 +1,5 @@
 /// libraries
-import { Request, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -12,7 +12,10 @@ import { UserDTO } from '../DTOs/User';
 import { Exception } from '../Middleware';
 
 /// content
-export const login = Exception.catcher(async (req: Request, res: Response) => {
+const route: string = '/auth';
+const router: Router = Router();
+
+const login = Exception.catcher(async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 	if (!email) throw new BadRequestError('No email received');
 	if (!password) throw new BadRequestError('No password received');
@@ -36,3 +39,7 @@ export const login = Exception.catcher(async (req: Request, res: Response) => {
 	res.locals.response = { token };
 	res.locals.status = HttpCodes.Accepted;
 });
+
+router.post('/login', login);
+
+export default { router, route };

@@ -1,19 +1,27 @@
 // https://www.npmjs.com/package/supertest
-import 'reflect-metadata';
 import supertest from 'supertest';
 import express from 'express';
+import { createConnection, getConnection } from 'typeorm';
 
-import { UserController } from '../Controllers';
+import { UserController } from '../../Controllers';
+import { HttpCodes } from '../../Enums';
 
 const app: express.Application = express();
 const request = supertest(app);
+app.use('/', UserController.router);
+
+beforeAll(async () => {
+	await createConnection();
+});
+
+afterAll(async () => {
+	await getConnection().close();
+});
 
 describe('Function getAll', () => {
-	app.get('/', UserController.getAll);
-
 	test('Should return User list', async () => {
 		// arrange
-		const expectedStatus: number = 200;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
 
 		// act
 		const response = await request.get('/');
@@ -24,11 +32,9 @@ describe('Function getAll', () => {
 });
 
 describe('Function getSingle', () => {
-	app.get('/:email', UserController.getSingle);
-
 	test('Should return User', async () => {
 		// arrange
-		const expectedStatus: number = 200;
+		const expectedStatus: HttpCodes = HttpCodes.Ok;
 
 		// act
 		const response = await request.get('/marc@mail.com');

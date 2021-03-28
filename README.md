@@ -1,9 +1,8 @@
 # Node API Template
 
-Make Enums & Errors globally available (namespaces)  
-Add super test
+-   Fix decorator issue when testing
 
--   https://www.npmjs.com/package/supertest
+_Make Enums & Errors globally available (namespaces)_
 
 ## Authentication
 

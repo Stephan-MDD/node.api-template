@@ -1,5 +1,4 @@
 import { Entity, Column, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn, Index } from 'typeorm';
-import { string } from 'yargs';
 import { UserRoles } from '../Enums';
 
 @Entity()
@@ -7,20 +6,20 @@ export default class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@PrimaryColumn('text')
+	@PrimaryColumn()
 	@Index({ unique: true })
 	email: string;
 
-	@Column('text')
+	@Column()
 	password: string;
 
-	@Column('text')
+	@Column()
 	firstName: string;
 
-	@Column('text')
+	@Column()
 	lastName: string;
 
-	@Column('integer')
+	@Column()
 	age: number;
 
 	@Column({

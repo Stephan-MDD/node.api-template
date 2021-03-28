@@ -1,3 +1,3 @@
-export * as AuthController from './AuthController';
-export * as UserController from './UserController';
-export * as MonitorController from './MonitorController';
+export { default as AuthController } from './AuthController';
+export { default as UserController } from './UserController';
+export { default as MonitorController } from './MonitorController';
