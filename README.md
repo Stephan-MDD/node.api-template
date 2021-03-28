@@ -1,14 +1,6 @@
 # Node API Template
 
-Should errors handle response?
-
-Example:
-`throw new NotFoundError('message')` ads properties to `ServiceResponse`
-
--   sets status to `404`
--   sets message to `message`
--   data is omitted as `null`
-    > remember to log errors in middleware
+Make Enums & Errors globally available (namespaces)
 
 ## Authentication
 

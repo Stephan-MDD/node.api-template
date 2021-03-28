@@ -1,5 +1,5 @@
 import { Entity, Column, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn, Index } from 'typeorm';
-
+import { string } from 'yargs';
 import { UserRoles } from '../Enums';
 
 @Entity()

@@ -13,7 +13,6 @@ export async function getSingle(email: string): Promise<UserDTO> {
 	try {
 		const user: User | undefined = await User.findOne({ email });
 
-		// user not found
 		if (user === undefined) {
 			throw new NotFoundError(`Could not find user with id: ${email}`);
 		}
@@ -26,14 +25,11 @@ export async function getSingle(email: string): Promise<UserDTO> {
 
 export async function addSingle(userNew: User): Promise<UserDTO> {
 	const salt: number = Number(process.env.BCRYPT_SALT);
-	const passwordHash = await bcrypt.hash(userNew.password, salt);
+	userNew.password = await bcrypt.hash(userNew.password, salt);
 
-	const user: User = new User();
-	user.email = userNew.email;
-	user.password = passwordHash;
-	user.firstName = userNew.firstName;
-	user.lastName = userNew.lastName;
-	user.age = userNew.age;
+	// DTO mapping
+	// ATT:: needs validation
+	const user: User = Object.assign(new User(), userNew);
 
 	try {
 		await user.save();
@@ -45,19 +41,14 @@ export async function addSingle(userNew: User): Promise<UserDTO> {
 }
 
 export async function updateSingle(email: string, userUpdate: User): Promise<UserDTO> {
-	const user: User | undefined = await User.findOne({ email });
+	let user: User | undefined = await User.findOne({ email });
 
-	// user not found
 	if (user === undefined) {
 		throw new NotFoundError(`Could not find user with id: ${email}`);
 	}
 
-	// add bcrypt for password
-	if (userUpdate.firstName) user.firstName = userUpdate.firstName;
-	if (userUpdate.lastName) user.lastName = userUpdate.lastName;
-	if (userUpdate.age) user.age = userUpdate.age;
-	if (userUpdate.password) user.password = userUpdate.password;
-	if (userUpdate.role) user.role = userUpdate.role;
+	// att:: add bcrypt for password
+	user = Object.assign(user, userUpdate);
 
 	await user.save();
 	return new UserDTO(user);
