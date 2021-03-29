@@ -4,16 +4,16 @@ import * as dotenv from 'dotenv';
 import { UserService } from '../../Services';
 import { User } from '../../Entities';
 import { UserDTO } from '../../DTOs/User';
-import Database from '../../Database';
+import { DBService } from '../../Services';
 import { NotFoundError } from '../../Errors/ClientErrors';
 
 beforeAll(async () => {
 	dotenv.config();
-	await Database.initiate();
+	await DBService.initiate();
 });
 
 afterAll(async () => {
-	await Database.conclude();
+	await DBService.conclude();
 });
 
 describe.skip('Function getAll', () => {

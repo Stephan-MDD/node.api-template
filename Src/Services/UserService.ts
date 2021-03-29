@@ -1,5 +1,7 @@
+/// libraries
 import bcrypt from 'bcrypt';
 
+/// modules
 import { User } from '../Entities';
 import { UserDTO } from '../DTOs/User';
 import { BadRequestError, NotFoundError } from '../Errors/ClientErrors';
@@ -10,17 +12,13 @@ export async function getAll(): Promise<UserDTO[]> {
 }
 
 export async function getSingle(email: string): Promise<UserDTO> {
-	try {
-		const user: User | undefined = await User.findOne({ email });
+	const user: User | undefined = await User.findOne({ email });
 
-		if (user === undefined) {
-			throw new NotFoundError(`Could not find user with id: ${email}`);
-		}
-
-		return new UserDTO(user);
-	} catch (error) {
-		throw error;
+	if (user === undefined) {
+		throw new NotFoundError(`Could not find user with id: ${email}`);
 	}
+
+	return new UserDTO(user);
 }
 
 export async function addSingle(userNew: User): Promise<UserDTO> {

@@ -1,6 +1,7 @@
+/// libraries
 import * as typeORM from 'typeorm';
 
-export default class Database {
+export default class DBService {
 	static async initiate() {
 		await typeORM.createConnection();
 	}

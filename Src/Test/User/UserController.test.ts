@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 
 import { UserController } from '../../Controllers';
 import { HttpCodes } from '../../Enums';
-import Database from '../../Database';
+import { DBService } from '../../Services';
 
 const app: express.Application = express();
 const request = supertest(app);
@@ -13,11 +13,11 @@ app.use('/', UserController.router);
 
 beforeAll(async () => {
 	dotenv.config();
-	await Database.initiate();
+	await DBService.initiate();
 });
 
 afterAll(async () => {
-	await Database.conclude();
+	await DBService.conclude();
 });
 
 describe.skip('Function getAll', () => {

@@ -7,17 +7,16 @@ import cors from 'cors';
 /// modules
 import * as Controllers from './Controllers';
 import { Monitor, Exception } from './Middleware';
-// import Database from './Database';
-import * as typeORM from 'typeorm';
+import { DBService } from './Services';
 
 /// content
 dotenv.config();
+
 (async () => {
 	const port: number = Number(process.env.SERVER_PORT);
 	const app: express.Application = express();
 
-	// await Database.initiate();
-	await typeORM.createConnection();
+	await DBService.initiate();
 	app.use(cors());
 	app.use(express.json());
 	app.use(Monitor.initiate());
@@ -33,4 +32,7 @@ dotenv.config();
 
 	// initialize server
 	app.listen(port, () => console.log(`Server listening on \x1b[36mhttp://localhost:${port}\x1b[0m`));
-})().finally(async () => await typeORM.getConnection().close() /*Database.conclude()*/);
+
+	//disconnects database connection when application is closed
+	app.addListener('close', DBService.conclude);
+})();
