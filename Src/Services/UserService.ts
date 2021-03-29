@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 /// modules
 import { User } from '../Entities';
-import { UserDTO } from '../DTOs/User';
+import { AddUserDTO, UpdateUserDTO, UserDTO } from '../DTOs/User';
 import { BadRequestError, NotFoundError } from '../Errors/ClientErrors';
 
 export async function getAll(): Promise<UserDTO[]> {
@@ -21,7 +21,7 @@ export async function getSingle(email: string): Promise<UserDTO> {
 	return new UserDTO(user);
 }
 
-export async function addSingle(userNew: User): Promise<UserDTO> {
+export async function addSingle(userNew: AddUserDTO): Promise<UserDTO> {
 	const salt: number = Number(process.env.BCRYPT_SALT);
 	userNew.password = await bcrypt.hash(userNew.password, salt);
 
@@ -38,7 +38,7 @@ export async function addSingle(userNew: User): Promise<UserDTO> {
 	return new UserDTO(user);
 }
 
-export async function updateSingle(email: string, userUpdate: User): Promise<UserDTO> {
+export async function updateSingle(email: string, userUpdate: UpdateUserDTO): Promise<UserDTO> {
 	let user: User | undefined = await User.findOne({ email });
 
 	if (user === undefined) {

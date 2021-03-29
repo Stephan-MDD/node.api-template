@@ -31,8 +31,8 @@ const getAll = async (req: Request, res: Response) => {
 	if (entryDate.toString() === 'Invalid Date') entryDate = null;
 	if (exitDate.toString() === 'Invalid Date') exitDate = null;
 
-	const monitorDTOs /*: MonitorDTO[] */ = await MonitorService.getRequests(entryDate, exitDate);
-	res.locals.response = monitorDTOs;
+	// const monitorDTOs /*: MonitorDTO[] */ = await MonitorService.getRequests(entryDate, exitDate);
+	// res.locals.response = monitorDTOs;
 	res.locals.status = HttpCodes.Accepted;
 };
 

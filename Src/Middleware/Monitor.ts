@@ -2,9 +2,12 @@ import * as os from 'os';
 import { Request, Response, NextFunction } from 'express';
 import { UserRoles, HttpCodes } from '../Enums';
 
+import { MonitorService } from '../Services';
+import { MonitorDTO } from '../DTOs/Monitor';
+
 export function initiate() {
 	return async (req: Request, res: Response, next: NextFunction) => {
-		res.locals.entryTime = Date.now();
+		res.locals.entryTime = new Date().toISOString();
 		next();
 	};
 }
@@ -15,43 +18,46 @@ export function conclude() {
 		if (res.locals.userRole > UserRoles.Default) return next();
 
 		// save meta data to database
+		const monitor: MonitorDTO = new MonitorDTO();
 
 		// user requesting
-		// const userId: number = res.locals.userId;
+		monitor.userId = res.locals.userId;
 
 		// error thrown to middleware
-		const errorName: string | undefined = res.locals.error?.name;
+		monitor.errorName = res.locals.error?.name;
 
 		// error initially thrown
-		const initialErrorName: string | undefined = res.locals.error?.initialName; // ATT:: returns object?
+		monitor.initialErrorName = res.locals.error?.initialName; // ATT:: returns object?
 
 		// error message
-		const errorMessage: string | undefined = undefined; // res.locals.error?.message;
+		monitor.errorMessage = res.locals.error?.message;
 
 		// error message
-		const errorType: string | undefined = res.locals.error?.type;
+		monitor.errorType = res.locals.error?.type ?? 'DefaultError';
 
 		// timestamp for request entry
-		const entryTime: number = res.locals.entryTime;
+		monitor.entryTime = res.locals.entryTime;
 
 		// process time for request
-		const processTime: number = Date.now() - res.locals.entryTime;
+		monitor.processTime = Date.now() - Date.parse(res.locals.entryTime);
 
 		// requested url
-		const url: string = req.url;
+		monitor.url = req.url;
 
 		// requested http method
-		const method: string = req.method;
+		monitor.method = req.method;
 
 		// current memory usage
-		const memoryUsage: number = os.totalmem() - os.freemem();
+		monitor.memoryUsage = os.totalmem() - os.freemem();
 
-		// current CPU usage
-		const CPUs = os.cpus();
-		const CPU_Usage = process.cpuUsage();
+		// // current CPU usage, for later implementation
+		// const CPUs = os.cpus();
+		// const CPU_Usage = process.cpuUsage();
 
 		// log for development
-		console.table({ errorName, errorMessage, initialErrorName, errorType, entryTime, processTime, url, method, memoryUsage /*, CPUs, CPU_Usage*/ });
+		console.table(monitor);
+
+		MonitorService.addSingle(monitor);
 
 		const { status, response } = res.locals;
 

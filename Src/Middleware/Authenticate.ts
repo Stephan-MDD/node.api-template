@@ -22,10 +22,10 @@ export default function authenticate(userRoles: UserRoles = UserRoles.Default) {
 		}
 
 		const { userId, userRole } = await AuthService.authenticate(token, userRoles);
+		console.log('userId', userId);
+
 		res.locals.userId = userId;
 		res.locals.userRole = userRole;
-
-		// applies userId to request object
 
 		// att:: set user role for later access
 		// res.locals.userRole = response.userRole;

@@ -29,6 +29,8 @@ export async function authenticate(token: string, restrictTo?: UserRoles): Promi
 		}
 
 		authentication.userId = decoded.email;
+
+		console.log('decoded', decoded);
 	} catch (error) {
 		throw new UnauthorizedError('Invalid JWT', error.name);
 	}

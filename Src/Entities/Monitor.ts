@@ -5,20 +5,23 @@ export default class Monitor extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
-	userId: number; // user reference?
+	@Column({ nullable: true })
+	userId: string; // user reference?
 
-	@Column()
+	@Column({ nullable: true })
 	initialErrorName: string;
 
-	@Column()
+	@Column({ nullable: true })
+	errorName: string;
+
+	@Column({ nullable: true })
 	errorMessage: string;
 
-	@Column()
+	@Column({ nullable: true })
 	errorType: string;
 
 	@Column()
-	entryTime: number; // Date?
+	entryTime: string;
 
 	@Column()
 	processTime: number;
@@ -29,7 +32,7 @@ export default class Monitor extends BaseEntity {
 	@Column()
 	method: string;
 
-	@Column()
+	@Column('bigint')
 	memoryUsage: number;
 
 	// CPUs = os.cpus();

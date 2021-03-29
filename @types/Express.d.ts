@@ -8,7 +8,7 @@ declare module 'express' {
 			status: HttpCodes;
 			response?: any;
 			error?: BaseError;
-			entryTime: number; // ATT:: ISO Format
+			entryTime: string;
 			userRole: UserRoles;
 			userId: string;
 		};
